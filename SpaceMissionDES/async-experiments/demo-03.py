@@ -1,6 +1,5 @@
 
 import asyncio
-from itertools import count
 import time
 from dataclasses import dataclass, field
 from heapq import heappop, heappush
@@ -105,8 +104,6 @@ async def in_orbit(meco):
 
 #######################################################################################################################
 # Mission Execution
-
-sim_continue = asyncio.Event()
 
 queue_to_future = asyncio.Queue()
 
