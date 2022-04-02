@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 from heapq import heappush, heappop
 from pprint import pprint # pretty-printing basic data structures
+import asyncio
 
 # Dependencies
 import pandas as pd
@@ -71,6 +72,25 @@ class Vehicle:
             ScheduledEvent(name, template, self, now() + self.activity.duration)
         )
 
+    async def execute_activity(self, event_start, event_complete):
+        # event_start has already occurred
+        # event_start.set()
+
+        # Get the next activity
+        activity = conops.after(event_start)
+
+        # - Change the activity
+        current_vehicle.activity = next_activity
+
+        # Schedule the next event
+        current_vehicle.schedule_next_event(future)
+
+        await next_activity
+
+        # - Update the vehicle trace
+        current_vehicle.update_trace()
+
+
     def update_trace(self):
         self.trace = pd.concat([
             self.trace,
@@ -90,6 +110,7 @@ class ScheduledEvent:
     template: Event=field(compare=False)
     vehicle: Vehicle=field(compare=False)
     time: float
+    sync: asyncio.Event = field(compare=False, default=asyncio.Event())
 
 # Implement the FutureEventList from Prof. Vuduc's example
 class FutureEventList:
@@ -139,6 +160,7 @@ if __name__ == "__main__":
     liftoff = Event("Liftoff")
     stage = Event("Stage")
     orbit = Event("Orbit")
+
     DONE = Event("Done")
 
     # - Activities
@@ -149,7 +171,6 @@ if __name__ == "__main__":
         orbit.name: Activity("insertion", orbit, DONE, 5)
     }
 
-    # - ConOps
     conops = ConOps(activities)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -176,53 +197,36 @@ if __name__ == "__main__":
     # system_state  # update the system state trace here
 
     # -----------------------------------------------------------------------------------------------------------------
-    # Simulation Loop
-    print("\n\n********************\n* BEGIN SIMULATION *\n********************\n")
+    # Step Through Event Flow
 
-    for event in future:
+    # Trigger the next event
+    current_event = future.get_next()
 
-        # Update the simulation clock
-        set_time(event.time)
+    current_event.sync.set()  # Actually trigger the async event. pass control to the proper activity coroutine
 
-        if event.template is DONE:
-            system_state[event.vehicle.activity.name].remove(vehicle)
-            print(f"Time is {now()}")
-            print("\n******************\n* END SIMULATION *\n******************")
-            break
+    # Process the event
+    # - Update the system state
+    # - Update the vehicle state
+    # v.propload -= 60  # some fancy code to handle this
 
-        # Transfer control to the vehicle process
-        vehicle = event.vehicle
+    # Get the next activity
+    next_activity = conops.after(current_event)
 
-        # Process the event
+    print(f"The current activity is {current_vehicle.activity}")
+    print(f"The current event is {current_event}")
+    print(f"The next activity is {next_activity}")
 
-        # - Update the vehicle state
-        vehicle.propload -= 60  #TODO: Add proper logic for propellant updates
+    # - Change the activity
+    current_vehicle.activity = next_activity
 
-        # Get the next activity & update the vehilce
-        previous_activity = vehicle.activity
-        vehicle.activity = conops.after(event)
+    # Schedule the next event
+    current_vehicle.schedule_next_event(future)
 
-        # - Update the vehicle trace
-        vehicle.update_trace()
+    assert current_event.template == next_activity.start
 
-        print(f"Time is {now()}")
-        print(f"\tThe previous activity was {previous_activity.name}")
-        print(f"\tThe current event is {event.name}")
-        print(f"\tThe next activity is {vehicle.activity.name}\n")
+    # - Update the vehicle trace
+    current_vehicle.update_trace()
 
-        # Update the system state
-        system_state[previous_activity.name].remove(vehicle)
-        system_state[vehicle.activity.name].append(vehicle)
+    print(current_vehicle.trace)
 
-        # Schedule the next event
-        vehicle.schedule_next_event(future)
-
-        # Return control to the scheduler
-
-    # -----------------------------------------------------------------------------------------------------------------
-    # Post-sim Report
-    print("\nVehicle Trace:")
-    print(vehicle.trace)
-
-    print("\nSystem State:")
-    print(system_state)
+    print("END.")
