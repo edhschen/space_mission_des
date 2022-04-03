@@ -3,11 +3,53 @@ import asyncio
 from dataclasses import dataclass, field
 from heapq import heappop, heappush
 
-queue_to_future = asyncio.Queue()
+
+#######################################################################################################################
+# Event Template
+
+@dataclass
+class Event:
+    """Object used to template events in a mission ConOps"""
+    name: str
+
+@dataclass
+class Terminator(Event):
+    """Object used to indicate end of mission"""
+    name: str
+
+    def __post_init__(self):
+        super().__init__(self.name)
+#######################################################################################################################
+# Activities
+
+@dataclass
+class Activity:
+    name: str
+    start: Event
+    end: Event
+    duration: float
+
+
+#######################################################################################################################
+# ConOps
+
+@dataclass
+class ConOps:
+    sequence: dict
+
+    def first(self):
+        return self.sequence["INIT"]
+
+    def after(self, current_event):
+        # Get the activity which starts with a particular event
+        return self.sequence[current_event.name]
+
+#######################################################################################################################
 
 @dataclass(order=True)
 class ScheduledEvent(asyncio.Event):
     name: str = field(compare=False)
+    template: str = field(compare=False)
     time: float
 
     def __post_init__(self):
@@ -16,6 +58,7 @@ class ScheduledEvent(asyncio.Event):
 @dataclass(order=True)
 class TerminalEvent(asyncio.Event):
     name: str = field(compare=False)
+    template: str = field(compare=False)
     time: float
 
     def __post_init__(self):
@@ -42,17 +85,55 @@ class FutureEventList:
         return heappop(self.events)
 
 
-async def activity(name: str, start: ScheduledEvent, end: ScheduledEvent, sim):#, future: FutureEventList):
+# async def activity_handler(name: str, start: ScheduledEvent, end: ScheduledEvent, sim):
+async def activity_handler(name: str, start: ScheduledEvent, sim):
 
     await start.wait()
     print(f"EVENT:  {start.name}  @ time {sim.clock}")
-    print(f"  Begin ACTIVITY:  {name}")
 
-    sim.future_queue.put_nowait(end)
+
+    current_activity = sim.conops.after(start)  # <- this gets the activity which comes after
+
+    # In our approach, activity.start has already occurred.
+    # So we must schedule the ending event, along with the the activity which will wait on that event
+
+    if isinstance(current_activity.end, Terminator):
+        current_end = TerminalEvent(
+            current_activity.end.name,
+            current_activity.end,
+            sim.clock + current_activity.duration
+        )
+        next_start    = current_end
+    else:
+        current_end = ScheduledEvent(
+            current_activity.end.name,
+            current_activity.end,
+            sim.clock + current_activity.duration
+        )
+
+        # Schedule the next activity, which will be waiting and started by the current end event
+        next_activity = sim.conops.after(current_end)
+        next_start    = current_end
+
+        sim.tasks.append(
+            asyncio.create_task(
+                activity_handler(
+                    next_activity.name, 
+                    next_start, 
+                    sim
+                )
+            )
+        )
+
+    print(f"  Begin ACTIVITY:  {current_activity.name}")
+
+    sim.future_queue.put_nowait(next_start)
+    # sim.future_queue.put_nowait(new_end_event)
 
 
 @dataclass
 class Simulator:
+    conops: ConOps
     future: FutureEventList = FutureEventList()
     tasks: list = field(default_factory = lambda: [])
     predicates: list = field(default_factory = lambda: [])
@@ -87,10 +168,10 @@ class Simulator:
             asyncio.create_task(coroutine)
         )
 
-    def add_activity(self, name: str, start: ScheduledEvent, end: ScheduledEvent):
+    def add_activity(self, name: str, start: ScheduledEvent):
         self.tasks.append(
             asyncio.create_task(
-                activity(name, start, end, sim)
+                activity_handler(name, start, sim)
             )
         )
 
@@ -101,50 +182,45 @@ class Simulator:
 
 async def fly_mission(sim: Simulator):
 
-    # liftoff = asyncio.Event()
-    INIT = ScheduledEvent("countdown", 0)
-    liftoff   = ScheduledEvent("liftoff", 10)
-    stage     = ScheduledEvent("stage", 25)
-    meco      = ScheduledEvent("meco", 50)
-    TERM      = TerminalEvent("END", 51)
+    # Initialize the mission
+    activity = sim.conops.first()
 
-    sim.schedule(INIT)
-
-    sim.add_activity("Pre-launch", INIT, liftoff)
-    sim.add_activity("Ascent S1", liftoff, TERM)
-    # sim.add_activity("Ascent S2", stage, meco)
-    # sim.add_activity("Insertion", meco, TERM)
-
-    # sim.tasks.extend([
-    #     asyncio.create_task(activity("Pre-launch", INIT, liftoff)),
-    # ])
+    # Schedule the intial event
+    INIT = ScheduledEvent(activity.start.name, activity.start, 0)
+    
+    sim.schedule(INIT)                     # This INIT event will be .set() at time zero
+    sim.add_activity(activity.name, INIT)  # This activity will comments when the INIT event is .set()
 
     await sim.run()
-    
-
-# =============================================================================
-# =============================================================================
-
-sim = Simulator()
-
-# INIT = ScheduledEvent("countdown", 0)
-# liftoff   = ScheduledEvent("liftoff", 10)
-# stage     = ScheduledEvent("stage", 25)
-# meco      = ScheduledEvent("meco", 50)
-# TERM      = TerminalEvent("END", 51)
 
 
-# activity("Ascent", liftoff, stage, sim)'
+#######################################################################################################################
+# Demo
+#######################################################################################################################
 
+if __name__ == "__main__":
 
-# conops = {
-#     liftoff.name: activity("Ascent S1", liftoff, stage, sim),
-#     stage.name:   activity("Ascent S2", stage, meco, sim)
-# }
+    # -----------------------------------------------------------------------------------------------------------------
+    # Mission Definition
+    # - Events
+    INIT    = Event("INIT")
+    liftoff = Event("Liftoff")
+    stage   = Event("Stage")
+    burnout = Event("Burnout")
+    DONE    = Terminator("TERM")
 
+    # - ConOps
+    conops = ConOps({
+        INIT.name:    Activity("Countdown", INIT, liftoff, 3),
+        liftoff.name: Activity("Ascent S1", liftoff, stage, 10),
+        stage.name:   Activity("Ascent S2", stage, burnout, 10),
+        burnout.name: Activity("Insertion", burnout, DONE, 2)
+    })
 
-print("\n***********\n***BEGIN***\n")
+    sim = Simulator(conops)
 
-asyncio.run(fly_mission(sim))
+    print("\n***********\n***BEGIN***\n")
 
-print("\n***DONE****\n***********")
+    asyncio.run(fly_mission(sim))
+
+    print("\n***DONE****\n***********")
