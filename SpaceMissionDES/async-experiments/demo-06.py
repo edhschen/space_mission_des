@@ -1,5 +1,6 @@
 
 import asyncio
+import pandas as pd
 from dataclasses import dataclass, field
 from heapq import heappop, heappush
 
@@ -54,10 +55,21 @@ class Vehicle:
     conops: ConOps
     propload: float
     activity: Activity = None
-    # trace: pd.DataFrame = pd.DataFrame(columns=['CurrentEvent', 'NextEvent', 'Prop', 'Activity'])
+    trace: pd.DataFrame = pd.DataFrame(columns=['Time', 'CurrentEvent', 'NextEvent', 'Prop', 'Activity'])
 
     def __repr__(self):
         return (f'{self.__class__.__name__} - {self.name}')
+
+    def update_trace(self, sim_time):
+        self.trace = pd.concat([
+            self.trace,
+            pd.DataFrame({
+                "Time": sim_time,
+                "CurrentEvent": self.activity.start, 
+                "NextEvent": self.activity.end, 
+                "Prop": self.propload, 
+                "Activity": self.activity}, index = [len(self.trace) + 1])
+        ])
 
 #######################################################################################################################
 
@@ -68,7 +80,7 @@ class ScheduledEvent(asyncio.Event):
     time: float
 
     def __post_init__(self):
-        super().__init__()
+        super().__init__()  # Make sure we inherit all of the attributes of the asyncio.Event class
 
 @dataclass(order=True)
 class TerminalEvent(asyncio.Event):
@@ -100,51 +112,10 @@ class FutureEventList:
         return heappop(self.events)
 
 
-# async def activity_handler(name: str, start: ScheduledEvent, end: ScheduledEvent, sim):
-async def activity_handler(name: str, start: ScheduledEvent, sim):
-
-    await start.wait()
-    print(f"EVENT:  {start.name}  @ time {sim.clock}")
-
-
-    current_activity = sim.conops.after(start)  # <- this gets the activity which comes after
-
-    # In our approach, activity.start has already occurred.
-    # So we must schedule the ending event, along with the the activity which will wait on that event
-
-    if isinstance(current_activity.end, Terminator):
-        current_end = TerminalEvent(
-            current_activity.end.name,
-            current_activity.end,
-            sim.clock + current_activity.duration
-        )
-        next_start    = current_end
-    else:
-        current_end = ScheduledEvent(
-            current_activity.end.name,
-            current_activity.end,
-            sim.clock + current_activity.duration
-        )
-
-        # Schedule the next activity, which will be waiting and started by the current end event
-        next_activity = sim.conops.after(current_end)
-        next_start    = current_end
-
-        sim.tasks.append(
-            asyncio.create_task(
-                activity_handler(next_activity.name, next_start, sim)
-            )
-        )
-
-    print(f"  Begin ACTIVITY:  {current_activity.name}")
-
-    sim.queue_future.put_nowait(next_start)
-    # sim.queue_future.put_nowait(new_end_event)
-
-
 @dataclass
 class Simulator:
-    entities: list  # no default, we cannot start a sim without entities
+    entities: dict = field(default_factory = lambda: {})  
+    # no default, we cannot start a sim without entities ? 
     future: FutureEventList = FutureEventList()
     tasks: list = field(default_factory = lambda: [])
     predicates: list = field(default_factory = lambda: [])
@@ -166,7 +137,7 @@ class Simulator:
             if isinstance(new_event, ScheduledEvent):
                 self.schedule(new_event)
             else:
-                print("TERMINAL EVENT")
+                print(f"TERMINAL EVENT @ time {new_event.time}")
 
         print("> No more future.")
 
@@ -179,37 +150,77 @@ class Simulator:
             asyncio.create_task(coroutine)
         )
 
-    def add_activity(self, name: str, start: ScheduledEvent):
+    def add_activity(self, name: str, start: ScheduledEvent, vehicle: Vehicle):
         self.tasks.append(
             asyncio.create_task(
-                activity_handler(name, start, sim)
+                activity_handler(name, start, self, vehicle)
             )
         )
 
-    async def run(self):
+    def add_vehicle(self, vehicle: Vehicle, start_time: float):
+        # Add the vehicle to the entities list
+        self.entities.update({vehicle.name: vehicle})
+        # Get the first activity in the vehicles's conops and schedule it
+        activity = vehicle.conops.first()
+        # Schedule the intial event
+        INIT = ScheduledEvent(activity.start.name, activity.start, start_time)
+        self.schedule(INIT)                     # This INIT event will be .set() at time zero
+        self.add_activity(activity.name, INIT, vehicle)  # This activity will comments when the INIT event is .set()
+
+    async def run(self, initial_vehicles):
+
+        for vehicle, start_time in initial_vehicles:
+            sim.add_vehicle(vehicle, start_time)
+
         self.add_task(self.process_events())
         await asyncio.gather(*self.tasks)
 
+# async def activity_handler(name: str, start: ScheduledEvent, end: ScheduledEvent, sim):
+async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, vehicle: Vehicle):
+
+    await start.wait()
+    print(f"\nEVENT:  {start.name}  @ time {sim.clock}")
+
+    current_activity = vehicle.conops.after(start)  # <- this gets the activity which comes after
+
+    print(f"  VEHICLE {vehicle.name} > Begin ACTIVITY:  {current_activity.name}")
+
+    # Update the Vehicle
+    vehicle.activity = current_activity
+    vehicle.propload -= 1
+    vehicle.update_trace(sim.clock)
+
+    # In our approach, activity.start has already occurred.
+    # So we must schedule the ending event, along with the the activity which will wait on that event
+
+    if isinstance(current_activity.end, Terminator):
+        current_end = TerminalEvent(
+            current_activity.end.name,
+            current_activity.end,
+            sim.clock + current_activity.duration
+        )
+        next_start    = current_end
+    else:
+        current_end = ScheduledEvent(
+            current_activity.end.name,
+            current_activity.end,
+            sim.clock + current_activity.duration
+        )
+
+        # Schedule the next activity, which will be waiting and started by the current end event
+        next_activity = vehicle.conops.after(current_end)
+        next_start    = current_end
+
+        sim.tasks.append(
+            asyncio.create_task(
+                activity_handler(next_activity.name, next_start, sim, vehicle)
+            )
+        )
+
+    sim.queue_future.put_nowait(next_start)
+
 
 async def fly_mission(sim: Simulator):
-
-    # Initialize the mission
-    activity = sim.conops.first()
-
-    # Schedule the intial event
-    INIT = ScheduledEvent(activity.start.name, activity.start, 0)
-    
-    sim.schedule(INIT)                     # This INIT event will be .set() at time zero
-    sim.add_activity(activity.name, INIT)  # This activity will comments when the INIT event is .set()
-
-    await sim.run()
-
-
-#######################################################################################################################
-# Demo
-#######################################################################################################################
-
-if __name__ == "__main__":
 
     # -----------------------------------------------------------------------------------------------------------------
     # Mission Definition
@@ -228,10 +239,23 @@ if __name__ == "__main__":
         burnout.name: Activity("Insertion", burnout, DONE, 2)
     })
 
-    v1 = Vehicle("V1", conops, 100)
-    v2 = Vehicle("V2", conops, 100)
+    v1 = Vehicle("Booster-01", conops, 100)
+    v2 = Vehicle("Booster-02", conops, 100)
 
-    sim = Simulator([])
+    # Execute the simulation based on the initilized vehicles
+    await sim.run([
+        (v1, 0.0),
+        (v2, 25.0),
+    ])
+
+
+#######################################################################################################################
+# Demo
+#######################################################################################################################
+
+if __name__ == "__main__":
+
+    sim = Simulator()
 
     print("\n***********\n***BEGIN***\n")
 
