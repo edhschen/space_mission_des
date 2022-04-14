@@ -1,8 +1,11 @@
 
+import logging
+
 from objects.events import *
 from objects.activities import *
 from objects.vehicles import Vehicle
 from drivers.simulator import Simulator
+from utilities.logging import set_logging_level
 
 async def fly_mission(sim: Simulator):
 
@@ -18,7 +21,7 @@ async def fly_mission(sim: Simulator):
     # - ConOps
     conops = ConOps({
         INIT.name:    Activity("Countdown", INIT, liftoff,  duration = 3),
-        liftoff.name: Activity("Ascent S1", liftoff, stage, duration = 10, p_fail = 1/1),
+        liftoff.name: Activity("Ascent S1", liftoff, stage, duration = 10, p_fail = 1/5),
         stage.name:   Activity("Ascent S2", stage, burnout, duration = 10, p_fail = 1/20),
         burnout.name: Activity("Insertion", burnout, DONE,  duration = 2,  p_fail = 1/50)
     })
@@ -35,6 +38,8 @@ async def fly_mission(sim: Simulator):
 #######################################################################################################################
 # Demo
 #######################################################################################################################
+# logging.basicConfig(level=logging.INFO, format='%(levelname)s>\t%(message)s')
+set_logging_level(logging.INFO)
 
 if __name__ == "__main__":
 

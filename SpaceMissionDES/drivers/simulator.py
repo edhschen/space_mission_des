@@ -3,11 +3,11 @@
 from dataclasses import dataclass, field
 import asyncio
 import random
+import logging
 import pandas as pd
 
 from objects.events import *
 from objects.vehicles import Vehicle
-
 
 @dataclass
 class Simulator:
@@ -35,9 +35,9 @@ class Simulator:
             if isinstance(new_event, ScheduledEvent):
                 self.schedule(new_event)
             else:
-                print(f"TERMINAL EVENT @ time {new_event.time}")
+                logging.info(f"\tTERMINAL EVENT @ time {new_event.time}")
 
-        print("> No more future.")
+        logging.info("> No more future.")
 
 
     def schedule(self, event: ScheduledEvent):
@@ -82,11 +82,11 @@ class Simulator:
 async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, vehicle: Vehicle):
 
     await start.wait()
-    print(f"\nEVENT:  {start.name}  @ time {sim.clock}")
+    logging.info(f"\n\tEVENT:  {start.name}  @ time {sim.clock}")
 
     current_activity = vehicle.conops.after(start)  # <- this gets the activity which comes after
 
-    print(f"  VEHICLE {vehicle.name} > Begin ACTIVITY:  {current_activity.name}")
+    logging.info(f"\t  VEHICLE {vehicle.name} > Begin ACTIVITY:  {current_activity.name}")
 
     # ---------------------------------------------------------------------------------------------
     # Test Activity Success
@@ -98,7 +98,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # Perform a bernoulli trial
     trial = random.random()
     if trial > (1 - p_fail_activity):
-        print(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {current_activity.name}")
+        logging.warning(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {current_activity.name}")
         # Log failure to sim
         sim.log_failure(sim.clock, vehicle.name, current_activity.name)
 
