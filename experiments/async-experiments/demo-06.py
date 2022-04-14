@@ -170,7 +170,7 @@ class Simulator:
     async def run(self, initial_vehicles):
 
         for vehicle, start_time in initial_vehicles:
-            sim.add_vehicle(vehicle, start_time)
+            self.add_vehicle(vehicle, start_time)
 
         self.add_task(self.process_events())
         await asyncio.gather(*self.tasks)
