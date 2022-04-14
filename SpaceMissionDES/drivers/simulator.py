@@ -1,7 +1,9 @@
 # simulator.py
 
-import asyncio
 from dataclasses import dataclass, field
+import asyncio
+import random
+import pandas as pd
 
 from objects.events import *
 from objects.vehicles import Vehicle
@@ -10,7 +12,8 @@ from objects.vehicles import Vehicle
 @dataclass
 class Simulator:
     entities: dict = field(default_factory = lambda: {})  
-    # no default, we cannot start a sim without entities ? 
+    # no default, we cannot start a sim without entities ?
+    failures: pd.DataFrame = pd.DataFrame(columns=["Time", "Vehicle", "Activity"])
     future: FutureEventList = FutureEventList()
     tasks: list = field(default_factory = lambda: [])
     predicates: list = field(default_factory = lambda: [])
@@ -40,14 +43,12 @@ class Simulator:
     def schedule(self, event: ScheduledEvent):
         heappush(self.future.events, event)
 
-
     def add_activity(self, name: str, start: ScheduledEvent, vehicle: Vehicle):
         self.tasks.append(
             asyncio.create_task(
                 activity_handler(name, start, self, vehicle)
             )
         )
-
 
     def add_vehicle(self, vehicle: Vehicle, start_time: float):
         # Add the vehicle to the entities list
@@ -58,7 +59,6 @@ class Simulator:
         INIT = ScheduledEvent(activity.start.name, activity.start, start_time)
         self.schedule(INIT)                     # This INIT event will be .set() at time zero
         self.add_activity(activity.name, INIT, vehicle)  # This activity will comments when the INIT event is .set()
-
 
     async def run(self, initial_vehicles):
 
@@ -71,6 +71,12 @@ class Simulator:
         
         await asyncio.gather(*self.tasks)
 
+    def log_failure(self, time, vehicle, activity):
+        self.failures = pd.concat([
+            self.failures,
+            pd.DataFrame({"Time":time, "Vehicle": vehicle, "Activity": activity}, index = [len(self.failures) + 1])
+        ])
+
 
 # async def activity_handler(name: str, start: ScheduledEvent, end: ScheduledEvent, sim):
 async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, vehicle: Vehicle):
@@ -81,6 +87,27 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     current_activity = vehicle.conops.after(start)  # <- this gets the activity which comes after
 
     print(f"  VEHICLE {vehicle.name} > Begin ACTIVITY:  {current_activity.name}")
+
+    # ---------------------------------------------------------------------------------------------
+    # Test Activity Success
+
+    # Look up activity probabililty
+    p_fail_activity = current_activity.p_fail
+    # p_fail_activity = 1/5  # = 0.8
+
+    # Perform a bernoulli trial
+    trial = random.random()
+    if trial > (1 - p_fail_activity):
+        print(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {current_activity.name}")
+        # Log failure to sim
+        sim.log_failure(sim.clock, vehicle.name, current_activity.name)
+
+
+    # Report failure to the simulation
+    # - Vehicle X failed on activity Y at time Z
+
+    # ---------------------------------------------------------------------------------------------
+
 
     # Update the Vehicle
     vehicle.activity = current_activity

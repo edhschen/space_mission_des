@@ -11,6 +11,7 @@ class Activity:
     start: Event
     end: Event
     duration: float
+    p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
 
 
 #######################################################################################################################

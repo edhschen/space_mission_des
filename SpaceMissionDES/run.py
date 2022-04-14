@@ -17,10 +17,10 @@ async def fly_mission(sim: Simulator):
 
     # - ConOps
     conops = ConOps({
-        INIT.name:    Activity("Countdown", INIT, liftoff, 3),
-        liftoff.name: Activity("Ascent S1", liftoff, stage, 10),
-        stage.name:   Activity("Ascent S2", stage, burnout, 10),
-        burnout.name: Activity("Insertion", burnout, DONE, 2)
+        INIT.name:    Activity("Countdown", INIT, liftoff,  duration = 3),
+        liftoff.name: Activity("Ascent S1", liftoff, stage, duration = 10, p_fail = 1/1),
+        stage.name:   Activity("Ascent S2", stage, burnout, duration = 10, p_fail = 1/20),
+        burnout.name: Activity("Insertion", burnout, DONE,  duration = 2,  p_fail = 1/50)
     })
 
     # Execute the simulation based on the initilized vehicles
