@@ -14,7 +14,7 @@ class ScheduledEvent(asyncio.Event):
         super().__init__()
 
 @dataclass(order=True)
-class TerminalEvent(asyncio.Event):
+class CompletionEvent(asyncio.Event):
     name: str = field(compare=False)
     time: float
 
@@ -79,7 +79,7 @@ async def fly_mission():
     liftoff   = ScheduledEvent("liftoff", 10)
     stage     = ScheduledEvent("stage", 25)
     meco      = ScheduledEvent("meco", 50)
-    TERM      = TerminalEvent("END", 51)
+    TERM      = CompletionEvent("END", 51)
 
     heappush(future.events, INIT)
 

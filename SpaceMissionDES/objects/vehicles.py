@@ -13,7 +13,10 @@ class Vehicle:
     conops: ConOps
     propload: float
     activity: Activity = None
+    completed_conops: bool = False
     trace: pd.DataFrame = pd.DataFrame(columns=['Time', 'CurrentEvent', 'NextEvent', 'Prop', 'Activity'])
+    state: list = field(default_factory = lambda: {'failures': 0})
+
 
     def __repr__(self):
         return (f'{self.__class__.__name__} - {self.name}')
@@ -28,3 +31,6 @@ class Vehicle:
                 "Prop": self.propload, 
                 "Activity": self.activity}, index = [len(self.trace) + 1])
         ])
+
+    def handle_failure(self):
+        self.state['failures'] += 1

@@ -1,6 +1,6 @@
 # activities.py
 from dataclasses import dataclass, field
-from objects.events import Event
+from objects.events import Event, Failure
 
 #######################################################################################################################
 # Activities
@@ -12,7 +12,7 @@ class Activity:
     end: Event
     duration: float
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
-
+    failure: Event = Failure()
 
 #######################################################################################################################
 # ConOps

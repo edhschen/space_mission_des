@@ -19,6 +19,17 @@ class Simulator:
     predicates: list = field(default_factory = lambda: [])
     clock: float = 0.0
     queue_future: asyncio.Queue = asyncio.Queue()
+    success: bool = False
+
+    def __repr__(self) -> str:
+
+        sim_text  = f"{self.__class__.__name__}\n"
+        sim_text += f"\ttime = {self.clock}\n"
+        sim_text += f"\tVehicles\n"
+        for vehicle in self.entities.values():
+            sim_text += "\t - " + str(vehicle.name) + "\n"
+
+        return (sim_text)
 
     async def process_events(self):
         for event in self.future:
@@ -32,12 +43,19 @@ class Simulator:
             # await sim_continue.wait()
             new_event = await self.queue_future.get()
 
-            if isinstance(new_event, ScheduledEvent):
-                self.schedule(new_event)
-            else:
+            if isinstance(new_event, FailureEvent):
+                logging.info(f"\tFAILURE @ time {new_event.time}")
+                self.cancel_tasks()
+                return
+            
+            elif isinstance(new_event, CompletionEvent):
                 logging.info(f"\tTERMINAL EVENT @ time {new_event.time}")
+            
+            else:
+                self.schedule(new_event)
 
-        logging.info("> No more future.")
+        logging.info("\nCOMPLETE\n")
+        self.success = True
 
 
     def schedule(self, event: ScheduledEvent):
@@ -77,6 +95,11 @@ class Simulator:
             pd.DataFrame({"Time":time, "Vehicle": vehicle, "Activity": activity}, index = [len(self.failures) + 1])
         ])
 
+    def cancel_tasks(self):
+        for task in self.tasks:
+            logging.debug(task)
+            logging.debug('cancelling task')
+            task.cancel()
 
 # async def activity_handler(name: str, start: ScheduledEvent, end: ScheduledEvent, sim):
 async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, vehicle: Vehicle):
@@ -99,46 +122,63 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     trial = random.random()
     if trial > (1 - p_fail_activity):
         logging.warning(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {current_activity.name}")
-        # Log failure to sim
+        
+        # Log failure to sim -- Vehicle X failed on activity Y at time Z
         sim.log_failure(sim.clock, vehicle.name, current_activity.name)
+        # Handle the failure, update failure states
+        vehicle.handle_failure()
+        
+        current_end = current_activity.failure
+    else:
+        current_end = current_activity.end
 
-
-    # Report failure to the simulation
-    # - Vehicle X failed on activity Y at time Z
+    # Get the event which successfuly ends the activity
+    # current_end = current_activity.end
 
     # ---------------------------------------------------------------------------------------------
-
-
-    # Update the Vehicle
+    # Update the Vehicle -- ONLY if the event activity is succesful
     vehicle.activity = current_activity
     vehicle.propload -= 1
-    vehicle.update_trace(sim.clock)
+    
 
     # In our approach, activity.start has already occurred.
     # So we must schedule the ending event, along with the the activity which will wait on that event
-
-    if isinstance(current_activity.end, Terminator):
-        current_end = TerminalEvent(
+    
+    if isinstance(current_end, Failure):
+        next_event = FailureEvent(
+            current_activity.failure.name,
+            current_activity.failure,
+            sim.clock
+        )
+        # Upd
+    
+    elif isinstance(current_end, Completor):
+        next_event = CompletionEvent(
             current_activity.end.name,
             current_activity.end,
             sim.clock + current_activity.duration
         )
-        next_start    = current_end
+        # Update the vehicle to indicate the ConOps has compelted
+        vehicle.completed_conops = True
+    
     else:
-        current_end = ScheduledEvent(
-            current_activity.end.name,
-            current_activity.end,
+        next_activity = vehicle.conops.after(current_end)
+        
+        next_event = ScheduledEvent(
+            next_activity.start.name,
+            next_activity.start,
             sim.clock + current_activity.duration
         )
 
         # Schedule the next activity, which will be waiting and started by the current end event
-        next_activity = vehicle.conops.after(current_end)
-        next_start    = current_end
 
         sim.tasks.append(
             asyncio.create_task(
-                activity_handler(next_activity.name, next_start, sim, vehicle)
+                activity_handler(next_activity.name, next_event, sim, vehicle)
             )
         )
 
-    sim.queue_future.put_nowait(next_start)
+    # ---------------------------------------------------------------------------------------------
+    # Return control to the simulation driver by placing an event on the future queue
+    vehicle.update_trace(sim.clock)
+    sim.queue_future.put_nowait(next_event)

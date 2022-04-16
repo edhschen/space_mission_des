@@ -14,7 +14,7 @@ class Event:
     name: str
 
 @dataclass
-class Terminator(Event):
+class Completor(Event):
     """Object used to indicate end of mission"""
     name: str
 
@@ -83,7 +83,7 @@ class ScheduledEvent(asyncio.Event):
         super().__init__()  # Make sure we inherit all of the attributes of the asyncio.Event class
 
 @dataclass(order=True)
-class TerminalEvent(asyncio.Event):
+class CompletionEvent(asyncio.Event):
     name: str = field(compare=False)
     template: str = field(compare=False)
     time: float
@@ -193,8 +193,8 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # In our approach, activity.start has already occurred.
     # So we must schedule the ending event, along with the the activity which will wait on that event
 
-    if isinstance(current_activity.end, Terminator):
-        current_end = TerminalEvent(
+    if isinstance(current_activity.end, Completor):
+        current_end = CompletionEvent(
             current_activity.end.name,
             current_activity.end,
             sim.clock + current_activity.duration
@@ -229,7 +229,7 @@ async def fly_mission(sim: Simulator):
     liftoff = Event("Liftoff")
     stage   = Event("Stage")
     burnout = Event("Burnout")
-    DONE    = Terminator("TERM")
+    DONE    = Completor("TERM")
 
     # - ConOps
     conops = ConOps({
