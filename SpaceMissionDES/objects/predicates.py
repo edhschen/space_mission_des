@@ -8,8 +8,6 @@ from typing import Callable
 class Predicate:
     name: str
     check: Callable
-    # next_event: Event
-    # event: asyncio.Event = asyncio.Event()
 
 
 def check_conditions(p, sim):

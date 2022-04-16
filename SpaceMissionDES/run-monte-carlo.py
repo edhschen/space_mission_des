@@ -12,19 +12,13 @@ from objects.vehicles import Vehicle
 from drivers.simulator import Simulator
 from utilities.logging import set_logging_level
 
-# Import the desired case -- INPUT
-# from missions.Case01_SimpleAscent import initial_vehicles
-# from missions.Case03_TankThenMoon import initial_vehicles
-
 
 def run_case(i):
-    from missions.Case01_SimpleAscent import initial_vehicles
-    sim = Simulator()
-    
-    # new_loop = asyncio.new_event_loop()
-    # asyncio.set_event_loop(new_loop)
 
-    # print("\n***********\n***BEGIN***\n")
+    # Import the desired case -- INPUT
+    from missions.Case03_TankThenMoon import initial_vehicles
+    
+    sim = Simulator()
 
     try:
         asyncio.run(
@@ -41,21 +35,25 @@ def run_case(i):
 #######################################################################################################################
 # logging.basicConfig(level=logging.INFO, format='%(levelname)s>\t%(message)s')
 set_logging_level(logging.ERROR)
+run_parallel = True
 
 if __name__ == "__main__":
 
+    print("\nRun Monte Carlo")
     N = 1000
 
-    # with Pool(processes=8) as pool:
-    #     mc_results = pool.map(run_case, range(N))
+    if run_parallel:
+        with Pool() as p:
+            mc_results = list(
+                tqdm.tqdm(
+                    p.imap_unordered(run_case, range(N)), 
+                    total=N))
 
-    with Pool() as p:
+    else:
         mc_results = list(
             tqdm.tqdm(
-                p.imap_unordered(run_case, range(N)), 
+                map(run_case, range(N)),
                 total=N))
-
-    # mc_results = list(map(run_case, range(N)))
 
     success_rate = sum(mc_results)
 

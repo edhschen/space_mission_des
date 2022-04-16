@@ -1,9 +1,9 @@
 # events.py
-
 from dataclasses import dataclass, field
 from heapq import heappop, heappush
 import asyncio
-from objects.predicates import Predicate
+from typing import Callable
+
 #######################################################################################################################
 # Event Templates
 
@@ -26,6 +26,14 @@ class Failure(Event):
 
     def __init__(self, name = "FAILURE"):
         self.name = name
+
+
+#######################################################################################################################
+# Predicates
+@dataclass
+class Predicate:
+    name: str
+    check: Callable
 
 #######################################################################################################################
 # Events with Times

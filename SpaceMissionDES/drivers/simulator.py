@@ -9,10 +9,10 @@ import pandas as pd
 from objects.events import *
 from objects.vehicles import Vehicle
 from objects.activities import *
-from objects.predicates import *
 
 
 def new_future_queue():
+    """Create a new event loop and Queue for each simulator instance, needed for Monate Carlo"""
     new_loop = asyncio.new_event_loop()
     asyncio.set_event_loop(new_loop)
     return asyncio.Queue()
@@ -27,12 +27,7 @@ class Simulator:
     predicates: list = field(default_factory = lambda: [])
     clock: float = 0.0
     success: bool = False
-    queue_future: asyncio.Queue = field(default_factory = new_future_queue)
-
-    # def __post_init__(self):
-    #     new_loop = asyncio.new_event_loop()
-    #     asyncio.set_event_loop(new_loop)
-        
+    queue_future: asyncio.Queue = field(default_factory = new_future_queue)        
 
     def __repr__(self) -> str:
 
@@ -50,6 +45,10 @@ class Simulator:
             # await asyncio.sleep(0.2)
             self.clock = event.time
             
+            # print(event.name)
+            # if event.time == 90.0:
+            #     print("whats goign on")
+
             # trigger the event
             event.set()
             
@@ -90,7 +89,8 @@ class Simulator:
     def add_activity(self, name: str, start: ScheduledEvent, vehicle: Vehicle):
         self.tasks.append(
             asyncio.create_task(
-                activity_handler(name, start, self, vehicle)
+                activity_handler(name, start, self, vehicle),
+                name = f"Vehicle: {vehicle.name} | INIT"
             )
         )
 
@@ -110,7 +110,7 @@ class Simulator:
             self.add_vehicle(vehicle, start_time)
         
         self.tasks.append(
-            asyncio.create_task(self.process_events())
+            asyncio.create_task(self.process_events(), name="process_event")
         )
         
         await asyncio.gather(*self.tasks)
@@ -209,7 +209,8 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
 
         sim.tasks.append(
             asyncio.create_task(
-                activity_handler(next_activity.name, next_event, sim, vehicle)
+                activity_handler(next_activity.name, next_event, sim, vehicle),
+                name = f"Vehicle: {vehicle.name} | Activity: {vehicle.activity.name}"
             )
         )
 

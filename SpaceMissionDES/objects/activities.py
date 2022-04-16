@@ -1,7 +1,6 @@
 # activities.py
 from dataclasses import dataclass, field
-from objects.events import Event, Failure
-from objects.predicates import Predicate
+from objects.events import Event, Failure, Predicate
 
 #######################################################################################################################
 # Activities
