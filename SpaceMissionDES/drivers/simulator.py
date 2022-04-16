@@ -29,41 +29,28 @@ class Simulator:
     success: bool = False
     queue_future: asyncio.Queue = field(default_factory = new_future_queue)        
 
-    def __repr__(self) -> str:
-
-        sim_text  = f"{self.__class__.__name__}\n"
-        sim_text += f"\ttime = {self.clock}\n"
-        sim_text += f"\tVehicles\n"
-        for vehicle in self.entities.values():
-            sim_text += "\t - " + str(vehicle.name) + "\n"
-
-        return (sim_text)
-
     async def process_events(self):
         for event in self.future:
-            # update the time
-            # await asyncio.sleep(0.2)
+            
+            # update the time            
             self.clock = event.time
             
-            # print(event.name)
-            # if event.time == 90.0:
-            #     print("whats goign on")
-
             # trigger the event
             event.set()
             
-            # await sim_continue.wait()
+            # Get the next event -- we use await here to pass control back and forth between the main scheduler and the activity handlers
             new_event = await self.queue_future.get()
 
-            if isinstance(new_event, FailureEvent):
+            # Handle each type of event
+            if isinstance(new_event, FailureEvent):                             # Failure events lead to canceling the sim outright
                 logging.info(f"\tFAILURE @ time {new_event.time}")
                 self.cancel_tasks()
                 return
             
-            elif isinstance(new_event, CompletionEvent):
+            elif isinstance(new_event, CompletionEvent):                        # Completion events conclude a ConOps and DO NOT schedule new events
                 logging.info(f"\tTERMINAL EVENT @ time {new_event.time}")
 
-            elif new_event.predicate != None:
+            elif new_event.predicate != None:                                   # Predicate events are added to predicates, not scheduled until satisfied
                 self.predicates.append(new_event)
             
             else:
@@ -81,7 +68,6 @@ class Simulator:
 
         logging.info("\nCOMPLETE\n")
         self.success = True
-
 
     def schedule(self, event: ScheduledEvent):
         heappush(self.future.events, event)
@@ -127,45 +113,35 @@ class Simulator:
             logging.debug('cancelling task')
             task.cancel()
 
+    def __repr__(self) -> str:
+
+        sim_text  = f"{self.__class__.__name__}\n"
+        sim_text += f"\ttime = {self.clock}\n"
+        sim_text += f"\tVehicles\n"
+        for vehicle in self.entities.values():
+            sim_text += "\t - " + str(vehicle.name) + "\n"
+
+        return (sim_text)
+
 # async def activity_handler(name: str, start: ScheduledEvent, end: ScheduledEvent, sim):
 async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, vehicle: Vehicle):
 
+    # An activity begins when the start event has been scheduled AND picked off the future event list
     await start.wait()
     logging.info(f"\n\tEVENT:  {start.name}  @ time {sim.clock}")
 
+    # Activty is handling is used at the beginning of an event
     current_activity = vehicle.conops.after(start)  # <- this gets the activity which comes after
-
     logging.info(f"\t  VEHICLE {vehicle.name} > Begin ACTIVITY:  {current_activity.name}")
 
     # ---------------------------------------------------------------------------------------------
     # Test Activity Success
-
-    # Look up activity probabililty
-    p_fail_activity = current_activity.p_fail
-    # p_fail_activity = 1/5  # = 0.8
-
-    # Perform a bernoulli trial
-    trial = random.random()
-    if trial > (1 - p_fail_activity):
-        logging.warning(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {current_activity.name}")
-        
-        # Log failure to sim -- Vehicle X failed on activity Y at time Z
-        sim.log_failure(sim.clock, vehicle.name, current_activity.name)
-        # Handle the failure, update failure states
-        vehicle.handle_failure()
-        
-        current_end = current_activity.failure
-    else:
-        current_end = current_activity.end
-
-    # Get the event which successfuly ends the activity
-    # current_end = current_activity.end
+    current_end = check_activity_failure(current_activity, vehicle, sim)
 
     # ---------------------------------------------------------------------------------------------
     # Update the Vehicle -- ONLY if the event activity is succesful
     vehicle.activity = current_activity
     vehicle.propload -= 1
-
 
     # In our approach, activity.start has already occurred.
     # So we must schedule the ending event, along with the the activity which will wait on that event
@@ -176,7 +152,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             current_activity.failure,
             sim.clock
         )
-        # Upd
+        # Update failure counters somewhere
     
     elif isinstance(current_end, Completor):
         next_event = CompletionEvent(
@@ -190,7 +166,6 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     else:
         next_activity = vehicle.conops.after(current_end)
         
-
         if isinstance(current_activity, PredicatedActivity):
             # Create the event, but don't schedule it
             next_event = ScheduledEvent(
@@ -206,7 +181,6 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             )
 
         # Schedule the next activity, which will be waiting and started by the current end event
-
         sim.tasks.append(
             asyncio.create_task(
                 activity_handler(next_activity.name, next_event, sim, vehicle),
@@ -218,3 +192,22 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # Return control to the simulation driver by placing an event on the future queue
     vehicle.update_trace(sim.clock)
     sim.queue_future.put_nowait(next_event)
+
+
+def check_activity_failure(activity, vehicle, sim):
+
+    # Perform a bernoulli trial
+    trial = random.random()
+    if trial > (1 - activity.p_fail):
+        logging.warning(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {activity.name}")
+        
+        # Log failure to sim -- Vehicle X failed on activity Y at time Z
+        sim.log_failure(sim.clock, vehicle.name, activity.name)
+        # Handle the failure, update failure states
+        vehicle.handle_failure()
+        
+        outcome = activity.failure
+    else:
+        outcome = activity.end
+
+    return outcome
