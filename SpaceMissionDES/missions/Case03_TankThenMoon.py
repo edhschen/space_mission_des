@@ -31,15 +31,34 @@ moonship_conops = ConOps({
 
 
 
+begin_countdown = Event("begin_countdown")
 begin_docking = Event("begin_docking")
 final_approach = Event("final_approach")
 dock = Event("dock")
 undock = Event("undock")
 DONE = Completor("DONE")
 
+
+# *********************************************************************
+def check_moonship_deployed(p, sim):
+
+    # Check if moonship in place
+    moonship = sim.entities['MoonShip']
+
+    if moonship.activity.name == "WaitForProp":
+        print(f"Predictate <{p.name}> Satisfied")
+        return True
+    else:
+        return False
+
+moonship_predeployed = Predicate("moonship_predeployed", check_moonship_deployed)
+# *********************************************************************
+
 tanker_conops = ConOps({
     # Nominal
-    INIT.name: Activity("Countdown", INIT, liftoff,  duration = 10),
+    INIT.name: PredicatedActivity("Countdown", INIT, begin_countdown, predicate=moonship_predeployed),
+    
+    begin_countdown.name: Activity("Countdown", begin_countdown, liftoff,  duration = 10),
     liftoff.name: Activity("Ascent", liftoff, meco, duration = 10),
     meco.name: Activity("Rendezvous", meco, final_approach, duration = 10),
     final_approach.name: Activity("Docking", final_approach, dock, duration = 10),
@@ -50,5 +69,5 @@ tanker_conops = ConOps({
 
 initial_vehicles = [
     (0.0, Vehicle("MoonShip", moonship_conops, 0)),
-    (1000.0, Vehicle("Tanker", tanker_conops, 100))
+    (0.0, Vehicle("Tanker", tanker_conops, 100))
 ]

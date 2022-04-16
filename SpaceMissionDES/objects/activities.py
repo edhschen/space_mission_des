@@ -1,6 +1,7 @@
 # activities.py
 from dataclasses import dataclass, field
 from objects.events import Event, Failure
+from objects.predicates import Predicate
 
 #######################################################################################################################
 # Activities
@@ -11,6 +12,17 @@ class Activity:
     start: Event
     end: Event
     duration: float
+    p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
+    failure: Event = Failure()
+
+
+@dataclass
+class PredicatedActivity:
+    name: str
+    start: Event
+    end: Event
+    predicate: Predicate
+    # duration: float
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
 

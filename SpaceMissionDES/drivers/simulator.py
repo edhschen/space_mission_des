@@ -8,6 +8,8 @@ import pandas as pd
 
 from objects.events import *
 from objects.vehicles import Vehicle
+from objects.activities import *
+from objects.predicates import *
 
 
 def new_future_queue():
@@ -61,9 +63,22 @@ class Simulator:
             
             elif isinstance(new_event, CompletionEvent):
                 logging.info(f"\tTERMINAL EVENT @ time {new_event.time}")
+
+            elif new_event.predicate != None:
+                self.predicates.append(new_event)
             
             else:
                 self.schedule(new_event)
+
+            # ----------------------------------------------
+            # Sim state has been updated -- CHECK PREDICATES
+            for p in self.predicates:
+                if p.predicate.check(p, self):  # calls unqiue functions to check predicate -> bool
+                    # Shedule the event to occur immediately
+                    p.time = self.clock
+                    self.schedule(p)
+                    # Remove the predicate so it wont be activated twice
+                    self.predicates.remove(p)
 
         logging.info("\nCOMPLETE\n")
         self.success = True
@@ -150,11 +165,11 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # Update the Vehicle -- ONLY if the event activity is succesful
     vehicle.activity = current_activity
     vehicle.propload -= 1
-    
+
 
     # In our approach, activity.start has already occurred.
     # So we must schedule the ending event, along with the the activity which will wait on that event
-    
+
     if isinstance(current_end, Failure):
         next_event = FailureEvent(
             current_activity.failure.name,
@@ -175,11 +190,20 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     else:
         next_activity = vehicle.conops.after(current_end)
         
-        next_event = ScheduledEvent(
-            next_activity.start.name,
-            next_activity.start,
-            sim.clock + current_activity.duration
-        )
+
+        if isinstance(current_activity, PredicatedActivity):
+            # Create the event, but don't schedule it
+            next_event = ScheduledEvent(
+                next_activity.start.name,
+                next_activity.start,
+                predicate = current_activity.predicate
+            )
+        else:
+            next_event = ScheduledEvent(
+                next_activity.start.name,
+                next_activity.start,
+                sim.clock + current_activity.duration
+            )
 
         # Schedule the next activity, which will be waiting and started by the current end event
 

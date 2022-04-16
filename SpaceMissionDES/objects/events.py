@@ -3,7 +3,7 @@
 from dataclasses import dataclass, field
 from heapq import heappop, heappush
 import asyncio
-
+from objects.predicates import Predicate
 #######################################################################################################################
 # Event Templates
 
@@ -34,7 +34,8 @@ class Failure(Event):
 class ScheduledEvent(asyncio.Event):
     name: str = field(compare=False)
     template: str = field(compare=False)
-    time: float
+    time: float = None
+    predicate: Predicate = field(compare=False, default=None)
 
     def __post_init__(self):
         super().__init__()  # Make sure we inherit all of the attributes of the asyncio.Event class
@@ -44,6 +45,7 @@ class CompletionEvent(asyncio.Event):
     name: str = field(compare=False)
     template: str = field(compare=False)
     time: float
+    predicate: Predicate = field(compare=False, default=None)
 
     def __post_init__(self):
         super().__init__()  # Make sure we inherit all of the attributes of the asyncio.Event class
@@ -53,9 +55,11 @@ class FailureEvent(asyncio.Event):
     name: str = field(compare=False)
     template: str = field(compare=False)
     time: float
+    predicate: Predicate = field(compare=False, default=None)
 
     def __post_init__(self):
         super().__init__()
+
 
 #######################################################################################################################
 # Future Event List

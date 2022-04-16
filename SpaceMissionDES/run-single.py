@@ -13,6 +13,8 @@ from utilities.logging import set_logging_level
 # from missions.Case01_SimpleAscent import initial_vehicles
 from missions.Case03_TankThenMoon import initial_vehicles
 
+from objects.predicates import *
+
 
 #######################################################################################################################
 # Demo
@@ -23,7 +25,10 @@ set_logging_level(logging.INFO)
 if __name__ == "__main__":
 
     sim = Simulator()
-    
+
+    # prop_full     = Event("prop_full")
+    # sim.predicates.append(Predicate("test", check_conditions, prop_full))
+    # sim.predicates.append(Predicate("test", check_conditions))
     print("\n***********\n***BEGIN***\n")
 
     try:
