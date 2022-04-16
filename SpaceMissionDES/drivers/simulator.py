@@ -9,6 +9,12 @@ import pandas as pd
 from objects.events import *
 from objects.vehicles import Vehicle
 
+
+def new_future_queue():
+    new_loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(new_loop)
+    return asyncio.Queue()
+
 @dataclass
 class Simulator:
     entities: dict = field(default_factory = lambda: {})  
@@ -18,8 +24,13 @@ class Simulator:
     tasks: list = field(default_factory = lambda: [])
     predicates: list = field(default_factory = lambda: [])
     clock: float = 0.0
-    queue_future: asyncio.Queue = asyncio.Queue()
     success: bool = False
+    queue_future: asyncio.Queue = field(default_factory = new_future_queue)
+
+    # def __post_init__(self):
+    #     new_loop = asyncio.new_event_loop()
+    #     asyncio.set_event_loop(new_loop)
+        
 
     def __repr__(self) -> str:
 
