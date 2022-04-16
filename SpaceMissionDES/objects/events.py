@@ -13,12 +13,19 @@ class Event:
     name: str
 
 @dataclass
-class Terminator(Event):
+class Completor(Event):
     """Object used to indicate end of mission"""
     name: str
 
     def __post_init__(self):
         super().__init__(self.name)
+
+@dataclass
+class Failure(Event):
+    """Object used to indicate a mission has failed"""
+
+    def __init__(self, name = "FAILURE"):
+        self.name = name
 
 #######################################################################################################################
 # Events with Times
@@ -33,7 +40,16 @@ class ScheduledEvent(asyncio.Event):
         super().__init__()  # Make sure we inherit all of the attributes of the asyncio.Event class
 
 @dataclass(order=True)
-class TerminalEvent(asyncio.Event):
+class CompletionEvent(asyncio.Event):
+    name: str = field(compare=False)
+    template: str = field(compare=False)
+    time: float
+
+    def __post_init__(self):
+        super().__init__()  # Make sure we inherit all of the attributes of the asyncio.Event class
+
+@dataclass(order=True)
+class FailureEvent(asyncio.Event):
     name: str = field(compare=False)
     template: str = field(compare=False)
     time: float
