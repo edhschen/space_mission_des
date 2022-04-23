@@ -41,7 +41,7 @@ moonship_conops = ConOps({
     begin_loiter.name: PredicatedActivity("WaitForProp", begin_loiter, prop_full, predicate = tanker_prop_transfered),
     
     prop_full.name: Activity("Checkout", prop_full, tli_burn, duration = 110),
-    tli_burn.name: Activity("TranslunarCoast", tli_burn, ARRIVE, duration = 10)
+    tli_burn.name: Activity("TranslunarCoast", tli_burn, ARRIVE, duration = 10, p_fail=1/10)
 })
 
 
@@ -83,7 +83,7 @@ tanker_conops = ConOps({
     INIT.name: PredicatedActivity("WaitForMoonship", INIT, begin_countdown, predicate=moonship_predeployed),
     
     begin_countdown.name: Activity("Countdown", begin_countdown, liftoff,  duration = 10),
-    liftoff.name:         Activity("Ascent", liftoff, meco, duration = 10, p_fail = 2/10, failure = get_spare),
+    liftoff.name:         Activity("Ascent", liftoff, meco, duration = 10, p_fail = 8/10, failure = get_spare),
     meco.name:            Activity("Rendezvous", meco, final_approach, duration = 10, p_fail = 1/10),
     final_approach.name:  Activity("Docking", final_approach, dock, duration = 10),
     dock.name:            Activity("PropTransfer", dock, undock, duration=10, p_fail = 2/10),

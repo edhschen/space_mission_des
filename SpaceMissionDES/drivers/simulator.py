@@ -12,7 +12,7 @@ from objects.activities import *
 
 
 def new_future_queue():
-    """Create a new event loop and Queue for each simulator instance, needed for Monate Carlo"""
+    """Create a new event loop and Queue for each simulator instance, needed for Monte Carlo"""
     new_loop = asyncio.new_event_loop()
     asyncio.set_event_loop(new_loop)
     return asyncio.Queue()
