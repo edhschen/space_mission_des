@@ -32,6 +32,7 @@ def run_case(i, case_setup):
                     "replicant": i,
                     "outcome": sim.success, 
                     "duration": sim.clock,
+                    "anomaly_count": j+1,
                     "anomaly_time": fail_data.Time,
                     "anomaly_vehicle": fail_data.Vehicle,
                     "anomaly_activity": fail_data.Activity,
@@ -44,6 +45,7 @@ def run_case(i, case_setup):
             "replicant": i,
             "outcome": sim.success, 
             "duration": sim.clock,
+            "anomaly_count": 0
         }, index=[0])
 
     # for name, data in sim.entities.items():

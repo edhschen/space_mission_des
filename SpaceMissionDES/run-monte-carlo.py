@@ -2,9 +2,9 @@
 # Imports
 # - Standard Library
 import logging
-from multiprocessing import Pool
+from pathlib import Path
 # - Dependencies
-import tqdm
+
 # - SpaceMissionDES
 from objects.events import *
 from objects.activities import *
@@ -23,10 +23,14 @@ set_logging_level(logging.ERROR)
 # Import the desired case -- INPUT
 from missions.Case03_TankThenMoon import initial_vehicles as case_setup
 
+out_dir = Path.cwd() / "results" / "test-01"
+
 if __name__ == "__main__":
 
     mc_results = run_montecarlo(case_setup, N := 1000)
 
     success_rate = sum(mc_results.groupby("replicant").first().outcome) / N
+
+    mc_results.to_csv(out_dir / "mc.csv", index=False)
 
     print(f"The success rate was: {success_rate} = {100*success_rate:.3f} %\n")
