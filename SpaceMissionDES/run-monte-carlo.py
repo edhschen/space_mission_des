@@ -21,16 +21,19 @@ set_logging_level(logging.ERROR)
 
 
 # Import the desired case -- INPUT
-from missions.Case03_TankThenMoon import initial_vehicles as case_setup
+# from missions.Case03_TankThenMoon import initial_vehicles
+from missions.Mars_01 import initial_vehicles
 
 out_dir = Path.cwd() / "results" / "test-02"
+if not out_dir.exists():
+    out_dir.mkdir()
 
 if __name__ == "__main__":
 
-    mc_results = run_montecarlo(case_setup, N := 5000)
+    mc_results = run_montecarlo(initial_vehicles, N := 200, run_parallel=False)
 
     success_rate = sum(mc_results.groupby("replicant").first().outcome) / N
 
     mc_results.to_csv(out_dir / "mc.csv", index=False)
 
-    print(f"The success rate was: {success_rate} = {100*success_rate:.3f} %\n")
+    print(f"The success rate was: {success_rate:.3f} = {100*success_rate:.2f} %\n")

@@ -45,7 +45,11 @@ class Simulator:
             if isinstance(new_event, FailureEvent):                             # Failure events lead to canceling the sim outright
                 logging.info(f"\tFAILURE @ time {new_event.time}")
                 self.cancel_tasks()
-                return
+                # Cleanup
+                for excess_event in self.future:
+                    excess_event.set()
+
+                return # Exit the process_events loop immediately
             
             elif isinstance(new_event, CompletionEvent):                        # Completion events conclude a ConOps and DO NOT schedule new events
                 logging.info(f"\tTERMINAL EVENT @ time {new_event.time}")
@@ -116,9 +120,9 @@ class Simulator:
 
     def cancel_tasks(self):
         for task in self.tasks:
-            logging.debug(task)
-            logging.debug('cancelling task')
-            task.cancel()
+            if task.get_name() != 'process_event' and not task.done():
+                logging.debug(f'CANCEL -> {task}')
+                task.cancel()
 
     def __repr__(self) -> str:
 
