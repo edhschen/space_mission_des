@@ -23,11 +23,11 @@ set_logging_level(logging.ERROR)
 # Import the desired case -- INPUT
 from missions.Case03_TankThenMoon import initial_vehicles as case_setup
 
-out_dir = Path.cwd() / "results" / "test-01"
+out_dir = Path.cwd() / "results" / "test-02"
 
 if __name__ == "__main__":
 
-    mc_results = run_montecarlo(case_setup, N := 1000)
+    mc_results = run_montecarlo(case_setup, N := 5000)
 
     success_rate = sum(mc_results.groupby("replicant").first().outcome) / N
 
