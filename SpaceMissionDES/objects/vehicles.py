@@ -29,6 +29,7 @@ class Vehicle:
                 "NextEvent": self.activity.end, 
                 "Activity": self.activity}, index = [len(self.trace) + 1])
         ])
+        #TODO: add dynamic resource reporting to the vehicle trace
 
     def handle_failure(self):
         self.state['failures'] += 1

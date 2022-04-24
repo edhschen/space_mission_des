@@ -27,6 +27,14 @@ class Failure(Event):
     def __init__(self, name = "FAILURE"):
         self.name = name
 
+@dataclass
+class Branch(Event):
+    """Event with variable outcomes"""
+    name: str
+    logic: Callable
+
+    def __post_init__(self):
+        super().__init__(self.name)
 
 #######################################################################################################################
 # Predicates

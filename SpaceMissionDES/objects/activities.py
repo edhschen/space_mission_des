@@ -46,3 +46,13 @@ class ConOps:
     def update(self, additions:dict):
         self.sequence.update(additions)
         return self
+
+#######################################################################################################################
+# Utility Functions
+
+def sample(delay):
+    if delay is None:
+        return 0.0
+    else:
+        return delay.rvs()
+

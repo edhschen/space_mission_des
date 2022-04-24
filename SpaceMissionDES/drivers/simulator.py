@@ -135,7 +135,7 @@ class Simulator:
 
         return (sim_text)
 
-# async def activity_handler(name: str, start: ScheduledEvent, end: ScheduledEvent, sim):
+
 async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, vehicle: Vehicle):
 
     # An activity begins when the start event has been scheduled AND picked off the future event list
@@ -149,6 +149,10 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # ---------------------------------------------------------------------------------------------
     # Test Activity Success
     current_end = check_activity_failure(current_activity, vehicle, sim)
+
+    # Change the end if there is a branching function
+    if isinstance(current_end, Branch):
+        current_end = current_end.logic(sim, vehicle)
 
     # ---------------------------------------------------------------------------------------------
     # Update the Vehicle
@@ -165,12 +169,11 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             current_activity.failure,
             sim.clock
         )
-        # Update failure counters somewhere
     
     elif isinstance(current_end, Completor):
         next_event = CompletionEvent(
-            current_activity.end.name,
-            current_activity.end,
+            current_end.name,
+            current_end,
             sim.clock + current_activity.duration + sample(current_activity.delay),
             state_update=state_update
         )
@@ -227,10 +230,3 @@ def check_activity_failure(activity, vehicle, sim):
         outcome = activity.end
 
     return outcome
-
-
-def sample(delay):
-    if delay is None:
-        return 0.0
-    else:
-        return delay.rvs()
