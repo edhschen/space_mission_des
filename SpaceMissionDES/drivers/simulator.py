@@ -59,15 +59,22 @@ class Simulator:
             # ----------------------------------------------
             # Sim state has been updated -- CHECK PREDICATES
             for p in self.predicates:
-                if p.predicate.check(p, self):  # calls unqiue functions to check predicate -> bool
-                    # Shedule the event to occur immediately
-                    p.time = self.clock
-                    self.schedule(p)
-                    # Remove the predicate so it wont be activated twice
-                    self.predicates.remove(p)
+                try:
+                    if p.predicate.check(p, self):  # calls unqiue functions to check predicate -> bool
+                        # Shedule the event to occur immediately
+                        p.time = self.clock
+                        self.schedule(p)
+                        # Remove the predicate so it wont be activated twice
+                        self.predicates.remove(p)
+                except AttributeError:
+                    continue
 
-        logging.info("\nCOMPLETE\n")
-        self.success = True
+        # Only log success if all predicates have been satisfied
+        if len(self.predicates) == 0:
+            logging.info("\nCOMPLETE\n")
+            self.success = True
+        else:
+            logging.warn(f"\nINcomplete predicates: {[p.predicate.name for p in self.predicates]}\n")
 
     def schedule(self, event: ScheduledEvent):
         heappush(self.future.events, event)
