@@ -11,7 +11,6 @@ from objects.activities import Activity, ConOps
 class Vehicle:
     name: str
     conops: ConOps
-    propload: float
     activity: Activity = None
     completed_conops: bool = False
     trace: pd.DataFrame = pd.DataFrame(columns=['Time', 'CurrentEvent', 'NextEvent', 'Prop', 'Activity'])
@@ -28,9 +27,13 @@ class Vehicle:
                 "Time": sim_time,
                 "CurrentEvent": self.activity.start, 
                 "NextEvent": self.activity.end, 
-                "Prop": self.propload, 
                 "Activity": self.activity}, index = [len(self.trace) + 1])
         ])
+        #TODO: add dynamic resource reporting to the vehicle trace
 
     def handle_failure(self):
         self.state['failures'] += 1
+
+    def update_state(self, updates):
+        for state_var, state_change in updates.items():
+            self.state[state_var] += state_change

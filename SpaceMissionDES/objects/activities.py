@@ -1,6 +1,7 @@
 # activities.py
 from dataclasses import dataclass, field
 from objects.events import Event, Failure, Predicate
+from scipy import stats
 
 #######################################################################################################################
 # Activities
@@ -11,8 +12,10 @@ class Activity:
     start: Event
     end: Event
     duration: float
+    delay: stats._distn_infrastructure.rv_frozen = None
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
+    update: dict = field(default_factory = lambda: {})
 
 
 @dataclass
@@ -24,6 +27,7 @@ class PredicatedActivity:
     # duration: float
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
+    update: dict = field(default_factory = lambda: {})
 
 #######################################################################################################################
 # ConOps
@@ -42,3 +46,13 @@ class ConOps:
     def update(self, additions:dict):
         self.sequence.update(additions)
         return self
+
+#######################################################################################################################
+# Utility Functions
+
+def sample(delay):
+    if delay is None:
+        return 0.0
+    else:
+        return delay.rvs()
+

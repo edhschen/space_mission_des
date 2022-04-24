@@ -32,8 +32,9 @@ class Simulator:
     async def process_events(self):
         for event in self.future:
             
-            # update the time            
+            # Update the Clock and do any vehicle state updates
             self.clock = event.time
+            event.state_update()  # fuction called which was defined in the activity_handler
             
             # trigger the event
             event.set()
@@ -134,12 +135,12 @@ class Simulator:
 
         return (sim_text)
 
-# async def activity_handler(name: str, start: ScheduledEvent, end: ScheduledEvent, sim):
+
 async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, vehicle: Vehicle):
 
     # An activity begins when the start event has been scheduled AND picked off the future event list
     await start.wait()
-    logging.info(f"\n\tEVENT:  {start.name}  @ time {sim.clock}")
+    logging.info(f"\n\tEVENT:  {start.name}  @ time {sim.clock:.2f}")
 
     # Activty is handling is used at the beginning of an event
     current_activity = vehicle.conops.after(start)  # <- this gets the activity which comes after
@@ -149,10 +150,15 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # Test Activity Success
     current_end = check_activity_failure(current_activity, vehicle, sim)
 
+    # Change the end if there is a branching function
+    if isinstance(current_end, Branch):
+        current_end = current_end.logic(sim, vehicle)
+
     # ---------------------------------------------------------------------------------------------
-    # Update the Vehicle -- ONLY if the event activity is succesful
+    # Update the Vehicle
     vehicle.activity = current_activity
-    vehicle.propload -= 1
+    # Define State variable updator which is only called when the event succeeds and the end event is triggered
+    state_update = lambda: vehicle.update_state(current_activity.update)
 
     # In our approach, activity.start has already occurred.
     # So we must schedule the ending event, along with the the activity which will wait on that event
@@ -163,13 +169,13 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             current_activity.failure,
             sim.clock
         )
-        # Update failure counters somewhere
     
     elif isinstance(current_end, Completor):
         next_event = CompletionEvent(
-            current_activity.end.name,
-            current_activity.end,
-            sim.clock + current_activity.duration
+            current_end.name,
+            current_end,
+            sim.clock + current_activity.duration + sample(current_activity.delay),
+            state_update=state_update
         )
         # Update the vehicle to indicate the ConOps has compelted
         vehicle.completed_conops = True
@@ -182,13 +188,15 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             next_event = ScheduledEvent(
                 next_activity.start.name,
                 next_activity.start,
-                predicate = current_activity.predicate
+                predicate = current_activity.predicate,
+                state_update=state_update
             )
         else:
             next_event = ScheduledEvent(
                 next_activity.start.name,
                 next_activity.start,
-                sim.clock + current_activity.duration
+                sim.clock + current_activity.duration + sample(current_activity.delay),
+                state_update=state_update
             )
 
         # Schedule the next activity, which will be waiting and started by the current end event
