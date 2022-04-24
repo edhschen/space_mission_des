@@ -2,59 +2,38 @@
 # Imports
 # - Standard Library
 import logging
-from multiprocessing import Pool
+from pathlib import Path
 # - Dependencies
-import tqdm
+
 # - SpaceMissionDES
 from objects.events import *
 from objects.activities import *
 from objects.vehicles import Vehicle
 from drivers.simulator import Simulator
 from utilities.logging import set_logging_level
-
-
-def run_case(i):
-
-    # Import the desired case -- INPUT
-    from missions.Case03_TankThenMoon import initial_vehicles
-    
-    sim = Simulator()
-
-    try:
-        asyncio.run(
-            sim.run(initial_vehicles)
-        )
-    except asyncio.CancelledError:
-        logging.warning("CONOPS FAILED")
-
-    logging.info(f"Mission Success: {sim.success}")
-    return sim.success
+from drivers.montecarlo import run_montecarlo
 
 #######################################################################################################################
 # Demo
 #######################################################################################################################
 # logging.basicConfig(level=logging.INFO, format='%(levelname)s>\t%(message)s')
 set_logging_level(logging.ERROR)
-run_parallel = True
+
+
+# Import the desired case -- INPUT
+# from missions.Case03_TankThenMoon import initial_vehicles
+from missions.Mars_01 import initial_vehicles
+
+out_dir = Path.cwd() / "results" / "test-02"
+if not out_dir.exists():
+    out_dir.mkdir()
 
 if __name__ == "__main__":
 
-    print("\nRun Monte Carlo")
-    N = 1000
+    mc_results = run_montecarlo(initial_vehicles, N := 200, run_parallel=False)
 
-    if run_parallel:
-        with Pool() as p:
-            mc_results = list(
-                tqdm.tqdm(
-                    p.imap_unordered(run_case, range(N)), 
-                    total=N))
+    success_rate = sum(mc_results.groupby("replicant").first().outcome) / N
 
-    else:
-        mc_results = list(
-            tqdm.tqdm(
-                map(run_case, range(N)),
-                total=N))
+    mc_results.to_csv(out_dir / "mc.csv", index=False)
 
-    success_rate = sum(mc_results)
-
-    print(f"The success rate was: {success_rate}/{N} = {100*success_rate/N:.3f} %")
+    print(f"The success rate was: {success_rate:.3f} = {100*success_rate:.2f} %\n")

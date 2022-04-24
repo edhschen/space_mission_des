@@ -1,5 +1,6 @@
 # predicates.py
-import asyncio
+import logging
+from functools import partial
 from dataclasses import dataclass, field
 # from objects.events import Event, Failure
 from typing import Callable
@@ -10,16 +11,17 @@ class Predicate:
     check: Callable
 
 
-def check_conditions(p, sim):
-
-    # Check if moonship in place
-    moonship = sim.entities['MoonShip']
-
-    if moonship.activity.name == "WaitForProp":
-        print(f"Predictate <{p.name}> Satisfied")
+def check_func(p, sim, vehicle, activity):
+    veh = sim.entities[vehicle]
+    if veh.activity.name == activity:
+        logging.info(f"Predictate <{p.predicate.name}> Satisfied")
         return True
     else:
         return False
+
+
+def vehicle_in_activity(vehicle: str, activity: str):
+    return partial(check_func, vehicle = vehicle, activity = activity)
 
 
 # p = Predicate("test", check_conditions)

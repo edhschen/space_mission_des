@@ -38,3 +38,7 @@ class ConOps:
     def after(self, current_event):
         # Get the activity which starts with a particular event
         return self.sequence[current_event.name]
+
+    def update(self, additions:dict):
+        self.sequence.update(additions)
+        return self
