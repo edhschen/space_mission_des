@@ -39,3 +39,4 @@ if __name__ == "__main__":
         logging.warning("CONOPS FAILED")
 
     print("\n***DONE****\n***********")
+    # print(sim.entities['Tanker'].state)

@@ -44,6 +44,7 @@ class ScheduledEvent(asyncio.Event):
     template: str = field(compare=False)
     time: float = None
     predicate: Predicate = field(compare=False, default=None)
+    state_update: Callable = field(compare=False, default=lambda: None)
 
     def __post_init__(self):
         super().__init__()  # Make sure we inherit all of the attributes of the asyncio.Event class
@@ -54,6 +55,7 @@ class CompletionEvent(asyncio.Event):
     template: str = field(compare=False)
     time: float
     predicate: Predicate = field(compare=False, default=None)
+    state_update: Callable = field(compare=False, default=lambda: None)
 
     def __post_init__(self):
         super().__init__()  # Make sure we inherit all of the attributes of the asyncio.Event class
