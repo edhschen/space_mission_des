@@ -22,15 +22,16 @@ set_logging_level(logging.ERROR)
 
 # Import the desired case -- INPUT
 # from missions.Case03_TankThenMoon import initial_vehicles
-from missions.Mars_01 import initial_vehicles
+# from missions.Mars_01 import initial_vehicles
+from missions.Case04_PropAggregation import initial_vehicles
 
-out_dir = Path.cwd() / "results" / "test-02"
+out_dir = Path.cwd() / "results" / "Case04-r02"
 if not out_dir.exists():
     out_dir.mkdir()
 
 if __name__ == "__main__":
 
-    mc_results = run_montecarlo(initial_vehicles, N := 200, run_parallel=False)
+    mc_results = run_montecarlo(initial_vehicles, N := 1000, run_parallel=False)
 
     success_rate = sum(mc_results.groupby("replicant").first().outcome) / N
 

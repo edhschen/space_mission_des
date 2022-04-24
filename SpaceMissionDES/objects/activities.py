@@ -1,6 +1,7 @@
 # activities.py
 from dataclasses import dataclass, field
 from objects.events import Event, Failure, Predicate
+from scipy import stats
 
 #######################################################################################################################
 # Activities
@@ -11,6 +12,7 @@ class Activity:
     start: Event
     end: Event
     duration: float
+    delay: stats._distn_infrastructure.rv_frozen = None
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
 

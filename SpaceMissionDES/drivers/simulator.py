@@ -139,7 +139,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
 
     # An activity begins when the start event has been scheduled AND picked off the future event list
     await start.wait()
-    logging.info(f"\n\tEVENT:  {start.name}  @ time {sim.clock}")
+    logging.info(f"\n\tEVENT:  {start.name}  @ time {sim.clock:.2f}")
 
     # Activty is handling is used at the beginning of an event
     current_activity = vehicle.conops.after(start)  # <- this gets the activity which comes after
@@ -169,7 +169,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
         next_event = CompletionEvent(
             current_activity.end.name,
             current_activity.end,
-            sim.clock + current_activity.duration
+            sim.clock + current_activity.duration + sample(current_activity.delay)
         )
         # Update the vehicle to indicate the ConOps has compelted
         vehicle.completed_conops = True
@@ -188,7 +188,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             next_event = ScheduledEvent(
                 next_activity.start.name,
                 next_activity.start,
-                sim.clock + current_activity.duration
+                sim.clock + current_activity.duration + sample(current_activity.delay)
             )
 
         # Schedule the next activity, which will be waiting and started by the current end event
@@ -222,3 +222,10 @@ def check_activity_failure(activity, vehicle, sim):
         outcome = activity.end
 
     return outcome
+
+
+def sample(delay):
+    if delay is None:
+        return 0.0
+    else:
+        return delay.rvs()
