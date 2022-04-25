@@ -24,7 +24,7 @@ conops = ConOps({
     burnout.name: Activity("Insertion", burnout, DONE,  duration = 2,  p_fail = 1/50),
 
     # Contingency
-    retry_liftoff.name: Activity("shortcut", retry_liftoff, liftoff, duration = 100)
+    retry_liftoff.name: Activity("Recycle", retry_liftoff, liftoff, duration = 100)
 })
 
 # Execute the simulation based on the initilized vehicles

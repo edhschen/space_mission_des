@@ -13,7 +13,7 @@ from objects.activities import *
 
 
 def new_future_queue():
-    """Create a new event loop and Queue for each simulator instance, needed for Monate Carlo"""
+    """Create a new event loop and Queue for each simulator instance, needed for Monte Carlo"""
     new_loop = asyncio.new_event_loop()
     asyncio.set_event_loop(new_loop)
     return asyncio.Queue()
@@ -46,7 +46,11 @@ class Simulator:
             if isinstance(new_event, FailureEvent):                             # Failure events lead to canceling the sim outright
                 logging.info(f"\tFAILURE @ time {new_event.time}")
                 self.cancel_tasks()
-                return
+                # Cleanup
+                for excess_event in self.future:
+                    excess_event.set()
+
+                return # Exit the process_events loop immediately
             
             elif isinstance(new_event, CompletionEvent):                        # Completion events conclude a ConOps and DO NOT schedule new events
                 logging.info(f"\tTERMINAL EVENT @ time {new_event.time}")
@@ -60,12 +64,15 @@ class Simulator:
             # ----------------------------------------------
             # Sim state has been updated -- CHECK PREDICATES
             for p in self.predicates:
-                if p.predicate.check(p, self):  # calls unqiue functions to check predicate -> bool
-                    # Shedule the event to occur immediately
-                    p.time = self.clock
-                    self.schedule(p)
-                    # Remove the predicate so it wont be activated twice
-                    self.predicates.remove(p)
+                try:
+                    if p.predicate.check(p, self):  # calls unqiue functions to check predicate -> bool
+                        # Shedule the event to occur immediately
+                        p.time = self.clock
+                        self.schedule(p)
+                        # Remove the predicate so it wont be activated twice
+                        self.predicates.remove(p)
+                except AttributeError:
+                    continue
 
             # testing alternative approach
             # for vehicle, predicate in self.predicates.items():
@@ -75,8 +82,12 @@ class Simulator:
             #         self.predicates.remove(predicate)
                     
 
-        logging.info("\nCOMPLETE\n")
-        self.success = True
+        # Only log success if all predicates have been satisfied
+        if len(self.predicates) == 0:
+            logging.info("\nCOMPLETE\n")
+            self.success = True
+        else:
+            logging.warn(f"\nINcomplete predicates: {[p.predicate.name for p in self.predicates]}\n")
 
     def schedule(self, event: ScheduledEvent):
         heappush(self.future.events, event)
@@ -118,9 +129,9 @@ class Simulator:
 
     def cancel_tasks(self):
         for task in self.tasks:
-            logging.debug(task)
-            logging.debug('cancelling task')
-            task.cancel()
+            if task.get_name() != 'process_event' and not task.done():
+                logging.debug(f'CANCEL -> {task}')
+                task.cancel()
 
     def __repr__(self) -> str:
 
