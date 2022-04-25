@@ -5,6 +5,7 @@ import asyncio
 import random
 import logging
 import pandas as pd
+from collections import Counter
 
 from objects.events import *
 from objects.vehicles import Vehicle
@@ -65,6 +66,14 @@ class Simulator:
                     self.schedule(p)
                     # Remove the predicate so it wont be activated twice
                     self.predicates.remove(p)
+
+            # testing alternative approach
+            # for vehicle, predicate in self.predicates.items():
+            #     if predicate.activity in [a.name for a in vehicle.trace.loc[:, "Activity"]]:
+            #         predicate.time = self.clock
+            #         self.schedule(predicate)
+            #         self.predicates.remove(predicate)
+                    
 
         logging.info("\nCOMPLETE\n")
         self.success = True
@@ -141,7 +150,9 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # ---------------------------------------------------------------------------------------------
     # Update the Vehicle -- ONLY if the event activity is succesful
     vehicle.activity = current_activity
-    vehicle.propload -= 1
+    vehicle.resource = Counter(vehicle.resource) - Counter(current_activity.resource_change)
+    if any(value == 0 for value in vehicle.resource.values()):
+        raise Exception(f"Vehicle {vehicle.name} ran out of a tracked resource or is trying to deplete a resource that does not exist")
 
     # In our approach, activity.start has already occurred.
     # So we must schedule the ending event, along with the the activity which will wait on that event
@@ -195,16 +206,25 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
 
 
 def check_activity_failure(activity, vehicle, sim):
-
+    multievent = type(vehicle) == list
     # Perform a bernoulli trial
     trial = random.random()
     if trial > (1 - activity.p_fail):
-        logging.warning(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {activity.name}")
+        if multievent:
+            name = ""
+            for v in vehicle:
+                name += v.name + "/"
+        logging.warning(f"  FAIL -- VEHICLE {name} failed ACTIVITY:  {activity.name}")
         
-        # Log failure to sim -- Vehicle X failed on activity Y at time Z
-        sim.log_failure(sim.clock, vehicle.name, activity.name)
-        # Handle the failure, update failure states
-        vehicle.handle_failure()
+        if not multievent:
+            # Log failure to sim -- Vehicle X failed on activity Y at time Z
+            sim.log_failure(sim.clock, vehicle.name, activity.name)
+            # Handle the failure, update failure states
+            vehicle.handle_failure()
+        else:
+            for v in vehicle:
+                sim.log_failure(sim.clock, v.name, activity.name)
+                v.handle_failure()
         
         outcome = activity.failure
     else:

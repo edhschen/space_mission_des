@@ -13,6 +13,7 @@ class Activity:
     duration: float
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
+    resource_change: dict = field(default_factory = dict)
 
 
 @dataclass
@@ -24,6 +25,7 @@ class PredicatedActivity:
     # duration: float
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
+    resource_change: dict = field(default_factory = dict)
 
 #######################################################################################################################
 # ConOps
