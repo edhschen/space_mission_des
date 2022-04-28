@@ -172,6 +172,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # print(f"Hellooo {current_end}  on {current_activity.name}")
     if not isinstance(current_end, Failure):
         if current_activity.type == "join":
+            # print(f"WHAT {current_activity.params['vehicles']}")
             logging.info(f"\t  VEHICLES {current_activity.params['vehicles']} > Begin ACTIVITY:  {current_activity.name}")
             logging.info(f"\t  VEHICLES {current_activity.params['vehicles']} > JOINED TO:  {current_activity.params['name']}")
             # print(current_activity.params['vehicles'])
@@ -180,6 +181,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             resources_agg = Counter({})
             for vc in current_activity.params['vehicles']:
                 # print(sim.entities)
+                # print(sim.entities[vc].name)
                 resources_agg += Counter(sim.entities[vc].resource)
 
             # if not name:
@@ -188,15 +190,17 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             #         name += sim.entities[vc].name + "/"
             
             # print(current_activity.params['conops'])
-            parent = Vehicle(current_activity.params['name'], current_activity.params['conops'], dict(resources_agg), children = current_activity.params['vehicles'].append(vehicle))
+            parent_vc = Vehicle(current_activity.params['name'], current_activity.params['conops'], dict(resources_agg), children = current_activity.params['vehicles'][:])
 
-            # for vc in current_activity.params['vehicles']:
-            #     print(sim.entities[vc].parent)
-            #     sim.entities[vc].parent = current_activity.params['name']
+            for vc in current_activity.params['vehicles']:
+                # print(f"Currently checking {vc}")
+                # print(sim.entities[vc].parent)
+                sim.entities[vc].parent = current_activity.params['name']
             
-            sim.add_vehicle(parent, sim.clock + current_activity.duration)
+            sim.add_vehicle(parent_vc, sim.clock + current_activity.duration)
 
         if current_activity.type == "dejoin":
+            logging.info(f"\t  VEHICLES {vehicle.name} > decoupled CHILDREN:  {vehicle.children}")
             for child in vehicle.children:
                 sim.entities[child].parent = None
             vehicle.children = []

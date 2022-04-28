@@ -107,11 +107,13 @@ tanker_conops = ConOps({
 })
 
 dosomething = Event("dosomething")
+dejoin = Event("dejoin")
 FINISH = Completor("FINISH")
 
 together_conops = ConOps({
     INIT.name: Activity("DockingSuccess", INIT, dosomething, duration = 2),
-    dosomething.name: Activity("DoSomething", dosomething, FINISH, duration = 20, p_fail = 1/20)
+    dosomething.name: Activity("DoSomething", dosomething, dejoin, duration = 20, p_fail = 1/20),
+    dejoin.name: Activity("Decouple", dejoin, FINISH, duration = 5, p_fail = 1/10, type="dejoin")
 })
 
 # populate conops that were used
