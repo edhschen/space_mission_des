@@ -5,6 +5,7 @@ import asyncio
 import random
 import logging
 import pandas as pd
+from collections import Counter
 
 from objects.events import *
 from objects.vehicles import Vehicle
@@ -52,7 +53,7 @@ class Simulator:
                 return # Exit the process_events loop immediately
             
             elif isinstance(new_event, CompletionEvent):                        # Completion events conclude a ConOps and DO NOT schedule new events
-                logging.info(f"\tTERMINAL EVENT @ time {new_event.time}")
+                logging.info(f"\tTERMINAL EVENT named {new_event.name} @ time {new_event.time}")
 
             elif new_event.predicate != None:                                   # Predicate events are added to predicates, not scheduled until satisfied
                 self.predicates.append(new_event)
@@ -72,6 +73,14 @@ class Simulator:
                         self.predicates.remove(p)
                 except AttributeError:
                     continue
+
+            # testing alternative approach
+            # for vehicle, predicate in self.predicates.items():
+            #     if predicate.activity in [a.name for a in vehicle.trace.loc[:, "Activity"]]:
+            #         predicate.time = self.clock
+            #         self.schedule(predicate)
+            #         self.predicates.remove(predicate)
+                    
 
         # Only log success if all predicates have been satisfied
         if len(self.predicates) == 0:
@@ -152,11 +161,63 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # ---------------------------------------------------------------------------------------------
     # Update the Vehicle -- ONLY if the event activity is succesful
     vehicle.activity = current_activity
-    vehicle.propload -= 1
+    # print(vehicle.resource)
+    vehicle.resource = Counter(vehicle.resource) - Counter(current_activity.resource_change)
+    if any(value == 0 for value in vehicle.resource.values()):
+        raise Exception(f"Vehicle {vehicle.name} ran out of a tracked resource or is trying to deplete a resource that does not exist")
 
     # In our approach, activity.start has already occurred.
     # So we must schedule the ending event, along with the the activity which will wait on that event
 
+    # print(f"Hellooo {current_end}  on {current_activity.name}")
+    if not isinstance(current_end, Failure):
+        if current_activity.agg_type == "join":
+            # print(f"WHAT {current_activity.agg_params['vehicles']}")
+            logging.info(f"\t  VEHICLES {current_activity.agg_params['vehicles']} > Begin ACTIVITY:  {current_activity.name}")
+            logging.info(f"\t  VEHICLES {current_activity.agg_params['vehicles']} > JOINED TO:  {current_activity.agg_params['name']}")
+            # print(current_activity.agg_params['vehicles'])
+            if len(current_activity.agg_params['vehicles']) < 2:
+                raise Exception("Not enough arguments provided for object collation")
+            resources_agg = Counter({})
+            for vc in current_activity.agg_params['vehicles']:
+                # print(sim.entities)
+                # print(sim.entities[vc].name)
+                resources_agg += Counter(sim.entities[vc].resource)
+
+            # if not name:
+            #     name = ""
+            #     for vc in current_activity.agg_params['vehicles']:
+            #         name += sim.entities[vc].name + "/"
+            
+            # print(current_activity.agg_params['conops'])
+            parent_vc = Vehicle(current_activity.agg_params['name'], current_activity.agg_params['conops'], dict(resources_agg), children = current_activity.agg_params['vehicles'][:])
+
+            for vc in current_activity.agg_params['vehicles']:
+                # print(f"Currently checking {vc}")
+                # print(sim.entities[vc].parent)
+                sim.entities[vc].parent = current_activity.agg_params['name']
+            
+            sim.add_vehicle(parent_vc, sim.clock + current_activity.duration)
+
+        if current_activity.agg_type == "dejoin":
+            logging.info(f"\t  VEHICLES {vehicle.name} > decoupled CHILDREN:  {vehicle.children}")
+            for child in vehicle.children:
+                sim.entities[child].parent = None
+            vehicle.children = []
+
+        if current_activity.agg_type == "dropchild":
+            for vc in current_activity.agg_params['vehicles']:
+                try:
+                    sim.entities[vc].parent = None
+                    vehicle.children.remove(vc)
+                except:
+                    raise Exception(f"Child entity {vc} does not exist")
+
+        if current_activity.agg_type == "addchild":
+            vehicle.children.append(current_activity.agg_params['vehicles'][:])
+            for vc in current_activity.agg_params['vehicles']:
+                sim.entities[vc].parent = vehicle.name
+    
     if isinstance(current_end, Failure):
         next_event = FailureEvent(
             current_activity.failure.name,
@@ -173,7 +234,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
         )
         # Update the vehicle to indicate the ConOps has compelted
         vehicle.completed_conops = True
-    
+
     else:
         next_activity = vehicle.conops.after(current_end)
         
@@ -206,16 +267,25 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
 
 
 def check_activity_failure(activity, vehicle, sim):
-
+    multievent = type(vehicle) == list
     # Perform a bernoulli trial
     trial = random.random()
     if trial > (1 - activity.p_fail):
+        if multievent:
+            name = ""
+            for v in vehicle:
+                name += v.name + "/"
         logging.warning(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {activity.name}")
         
-        # Log failure to sim -- Vehicle X failed on activity Y at time Z
-        sim.log_failure(sim.clock, vehicle.name, activity.name)
-        # Handle the failure, update failure states
-        vehicle.handle_failure()
+        if not multievent:
+            # Log failure to sim -- Vehicle X failed on activity Y at time Z
+            sim.log_failure(sim.clock, vehicle.name, activity.name)
+            # Handle the failure, update failure states
+            vehicle.handle_failure()
+        else:
+            for v in vehicle:
+                sim.log_failure(sim.clock, v.name, activity.name)
+                v.handle_failure()
         
         outcome = activity.failure
     else:

@@ -13,6 +13,14 @@ class Activity:
     duration: float
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
+    resource_change: dict = field(default_factory = dict)
+    agg_type: str = ""   # either join, dejoin, dropchild, addchild
+    agg_params: dict = field(default_factory = dict) 
+    # dict of agg params 
+    #   FOR join {conops: conops, vehicles: [va, vb], name: "va-vb"}
+    #   FOR dejoin N/A
+    #   FOR addchild {vehicles: [va, vb]}
+    #   FOR dropchild {vehicles: [va, vb]}
 
 
 @dataclass
@@ -24,6 +32,9 @@ class PredicatedActivity:
     # duration: float
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
+    resource_change: dict = field(default_factory = dict)
+    agg_type: str = ""
+    agg_params: list = field(default_factory = list)
 
 #######################################################################################################################
 # ConOps
@@ -33,6 +44,7 @@ class ConOps:
     sequence: dict
 
     def first(self):
+        # print(self)
         return self.sequence["INIT"]
 
     def after(self, current_event):
