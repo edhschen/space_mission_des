@@ -13,6 +13,7 @@ from utilities.logging import set_logging_level
 from missions.Case04_TwoMerge import initial_vehicles
 # from missions.Case03_TankThenMoon import initial_vehicles
 # from missions.Mars_01 import initial_vehicles
+# from missions.Case04_PropAggregation import initial_vehicles
 
 
 #######################################################################################################################

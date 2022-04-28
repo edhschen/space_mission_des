@@ -59,6 +59,11 @@ class Vehicle:
                 "Resource": self.resource, 
                 "Activity": self.activity}, index = [len(self.trace) + 1])
         ])
+        #TODO: add dynamic resource reporting to the vehicle trace
 
     def handle_failure(self):
         self.state['failures'] += 1
+
+    def update_state(self, updates):
+        for state_var, state_change in updates.items():
+            self.state[state_var] += state_change
