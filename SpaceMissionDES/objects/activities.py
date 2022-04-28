@@ -14,6 +14,8 @@ class Activity:
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
     resource_change: dict = field(default_factory = dict)
+    type: str = ""   # either join or dejoin
+    params: dict = field(default_factory = dict) # list of vehicles to join or dejoin {conops: conops, vehicles: [va, vb]}
 
 
 @dataclass
@@ -26,6 +28,8 @@ class PredicatedActivity:
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
     resource_change: dict = field(default_factory = dict)
+    type: str = ""
+    params: list = field(default_factory = list)
 
 #######################################################################################################################
 # ConOps

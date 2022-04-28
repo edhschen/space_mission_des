@@ -161,6 +161,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # ---------------------------------------------------------------------------------------------
     # Update the Vehicle -- ONLY if the event activity is succesful
     vehicle.activity = current_activity
+    # print(vehicle.resource)
     vehicle.resource = Counter(vehicle.resource) - Counter(current_activity.resource_change)
     if any(value == 0 for value in vehicle.resource.values()):
         raise Exception(f"Vehicle {vehicle.name} ran out of a tracked resource or is trying to deplete a resource that does not exist")
@@ -186,6 +187,31 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
         vehicle.completed_conops = True
     
     else:
+        if current_activity.type == "join":
+            if len(current_activity.params['vehicles']) <= 2:
+                raise Exception("Not enough arguments provided for object collation")
+            resources_agg = Counter({})
+            for vc in current_activity.params['vehicles']:
+                resources_agg += Counter(vc.resource)
+
+            if not name:
+                name = ""
+                for vc in current_activity.params['vehicles']:
+                    name += vc.name + "/"
+            
+            parent = Vehicle(name, current_activity.params['conops'], dict(resources_agg), children = current_activity.params['vehicles'].append(vehicle))
+            
+            for vc in current_activity.params['vehicles']:
+                vc.parent = parent
+            
+            sim.add_vehicle(parent, sim.clock + current_activity.duration)
+
+        if current_activity.type == "dejoin":
+            for child in vehicle.children:
+                child.parent = None
+            vehicle.children = []
+        
+
         next_activity = vehicle.conops.after(current_end)
         
         if isinstance(current_activity, PredicatedActivity):

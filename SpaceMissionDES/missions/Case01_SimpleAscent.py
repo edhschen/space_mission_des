@@ -29,6 +29,6 @@ conops = ConOps({
 
 # Execute the simulation based on the initilized vehicles
 initial_vehicles = [
-    (0.0, Vehicle("Booster-01", conops, 100)),
+    (0.0, Vehicle("Booster-01", conops, {'propellant':100})),
     # (25.0, Vehicle("Booster-02", conops, 100))
 ]

@@ -56,7 +56,7 @@ class Vehicle:
                 "Time": sim_time,
                 "CurrentEvent": self.activity.start, 
                 "NextEvent": self.activity.end, 
-                "Prop": self.propload, 
+                "Resource": self.resource, 
                 "Activity": self.activity}, index = [len(self.trace) + 1])
         ])
 
