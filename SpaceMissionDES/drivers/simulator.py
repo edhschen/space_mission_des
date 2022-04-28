@@ -53,7 +53,7 @@ class Simulator:
                 return # Exit the process_events loop immediately
             
             elif isinstance(new_event, CompletionEvent):                        # Completion events conclude a ConOps and DO NOT schedule new events
-                logging.info(f"\tTERMINAL EVENT @ time {new_event.time}")
+                logging.info(f"\tTERMINAL EVENT named {new_event.name} @ time {new_event.time}")
 
             elif new_event.predicate != None:                                   # Predicate events are added to predicates, not scheduled until satisfied
                 self.predicates.append(new_event)
@@ -169,6 +169,42 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     # In our approach, activity.start has already occurred.
     # So we must schedule the ending event, along with the the activity which will wait on that event
 
+    # print(f"Hellooo {current_end}  on {current_activity.name}")
+    if not isinstance(current_end, Failure):
+        if current_activity.type == "join":
+            logging.info(f"\t  VEHICLES {current_activity.params['vehicles']} > Begin ACTIVITY:  {current_activity.name}")
+            logging.info(f"\t  VEHICLES {current_activity.params['vehicles']} > JOINED TO:  {current_activity.params['name']}")
+            # print(current_activity.params['vehicles'])
+            if len(current_activity.params['vehicles']) < 2:
+                raise Exception("Not enough arguments provided for object collation")
+            resources_agg = Counter({})
+            for vc in current_activity.params['vehicles']:
+                # print(sim.entities)
+                resources_agg += Counter(sim.entities[vc].resource)
+
+            # if not name:
+            #     name = ""
+            #     for vc in current_activity.params['vehicles']:
+            #         name += sim.entities[vc].name + "/"
+            
+            # print(current_activity.params['conops'])
+            parent = Vehicle(current_activity.params['name'], current_activity.params['conops'], dict(resources_agg), children = current_activity.params['vehicles'].append(vehicle))
+
+            # for vc in current_activity.params['vehicles']:
+            #     print(sim.entities[vc].parent)
+            #     sim.entities[vc].parent = current_activity.params['name']
+            
+            sim.add_vehicle(parent, sim.clock + current_activity.duration)
+
+        if current_activity.type == "dejoin":
+            for child in vehicle.children:
+                sim.entities[child].parent = None
+            vehicle.children = []
+
+        # if current_activity.type == "dropchild":
+
+        # if current_activity.type == "addchild":
+    
     if isinstance(current_end, Failure):
         next_event = FailureEvent(
             current_activity.failure.name,
@@ -185,38 +221,8 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
         )
         # Update the vehicle to indicate the ConOps has compelted
         vehicle.completed_conops = True
-    
+
     else:
-        if current_activity.type == "join":
-            print("HELLOOOO")
-            print(current_activity.params['vehicles'])
-            if len(current_activity.params['vehicles']) < 2:
-                raise Exception("Not enough arguments provided for object collation")
-            resources_agg = Counter({})
-            for vc in current_activity.params['vehicles']:
-                # print(sim.entities)
-                resources_agg += Counter(sim.entities[vc].resource)
-
-            # if not name:
-            #     name = ""
-            #     for vc in current_activity.params['vehicles']:
-            #         name += sim.entities[vc].name + "/"
-            
-            print(current_activity.params['conops'])
-            parent = Vehicle(current_activity.params['name'], current_activity.params['conops'], dict(resources_agg), children = current_activity.params['vehicles'].append(vehicle))
-
-            # for vc in current_activity.params['vehicles']:
-            #     print(sim.entities[vc].parent)
-            #     sim.entities[vc].parent = current_activity.params['name']
-            
-            sim.add_vehicle(parent, sim.clock + current_activity.duration)
-
-        if current_activity.type == "dejoin":
-            for child in vehicle.children:
-                child.parent = None
-            vehicle.children = []
-        
-
         next_activity = vehicle.conops.after(current_end)
         
         if isinstance(current_activity, PredicatedActivity):

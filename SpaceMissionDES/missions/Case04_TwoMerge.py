@@ -3,6 +3,7 @@ import logging
 from objects.events import *
 from objects.activities import *
 from objects.vehicles import Vehicle
+from objects.predicates import Predicate, vehicle_in_activity
 
 together_conops = ConOps({})
 
@@ -18,6 +19,8 @@ prop_full    = Event("prop_full")
 tli_burn     = Event("tli_burn")
 dock         = Event("dock")
 stall = Event("stall")
+almost_arrive = Event("almost_arriving")
+finale = Event("finale")
 ARRIVE       = Completor("ARRIVE")
 
 # *********************************************************************
@@ -47,8 +50,10 @@ moonship_conops = ConOps({
     prop_full.name: Activity("Checkout", prop_full, tli_burn, duration = 110),
     tli_burn.name: Activity("TranslunarCoast", tli_burn, dock, duration = 10, p_fail=1/10),
 
-    dock.name: Activity("Docking", dock, stall, duration = 10, p_fail = 1/10, type="join", params={"conops": together_conops, "vehicles": ["Tanker", "MoonShip"], "name": "together"}),
-    stall.name: Activity("stall", stall, ARRIVE, duration = 30)
+    dock.name: Activity("Docking", dock, almost_arrive, duration = 10, p_fail = 1/10, type="join", params={"conops": together_conops, "vehicles": ["Tanker", "MoonShip"], "name": "together"}),
+    almost_arrive.name: PredicatedActivity("spin", almost_arrive, finale, p_fail = 1/10, predicate = Predicate("together finished", vehicle_in_activity("together", "DoSomething"))),
+    finale.name: Activity("Finale", finale, ARRIVE, duration = 2, p_fail = 1/100)
+
 
 })
 
@@ -109,7 +114,11 @@ together_conops = ConOps({
     dosomething.name: Activity("DoSomething", dosomething, FINISH, duration = 20, p_fail = 1/20)
 })
 
+# populate conops that were used
 moonship_conops.sequence['dock'].params['conops'] = together_conops
+
+def populate_conops(vehicle, agg_event, conops):
+    vehicle.sequence[agg_event].params['conops'] = conops
 
 
 # -----------------------------------------------------------------------------------------------------------------
