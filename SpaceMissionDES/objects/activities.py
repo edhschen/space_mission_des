@@ -39,6 +39,7 @@ class ConOps:
     sequence: dict
 
     def first(self):
+        # print(self)
         return self.sequence["INIT"]
 
     def after(self, current_event):

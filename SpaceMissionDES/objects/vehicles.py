@@ -15,7 +15,7 @@ class Vehicle:
     # propload: float
     resource: dict = field(default_factory = dict)
     children: list = field(default_factory = list)
-    parent: 'Vehicle' = None
+    parent: str = None
     activity: Activity = None
     completed_conops: bool = False
     trace: pd.DataFrame = pd.DataFrame(columns=['Time', 'CurrentEvent', 'NextEvent', 'Prop', 'Activity'])

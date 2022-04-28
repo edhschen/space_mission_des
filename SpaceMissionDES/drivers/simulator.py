@@ -188,21 +188,26 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     
     else:
         if current_activity.type == "join":
-            if len(current_activity.params['vehicles']) <= 2:
+            print("HELLOOOO")
+            print(current_activity.params['vehicles'])
+            if len(current_activity.params['vehicles']) < 2:
                 raise Exception("Not enough arguments provided for object collation")
             resources_agg = Counter({})
             for vc in current_activity.params['vehicles']:
-                resources_agg += Counter(vc.resource)
+                # print(sim.entities)
+                resources_agg += Counter(sim.entities[vc].resource)
 
-            if not name:
-                name = ""
-                for vc in current_activity.params['vehicles']:
-                    name += vc.name + "/"
+            # if not name:
+            #     name = ""
+            #     for vc in current_activity.params['vehicles']:
+            #         name += sim.entities[vc].name + "/"
             
-            parent = Vehicle(name, current_activity.params['conops'], dict(resources_agg), children = current_activity.params['vehicles'].append(vehicle))
-            
-            for vc in current_activity.params['vehicles']:
-                vc.parent = parent
+            print(current_activity.params['conops'])
+            parent = Vehicle(current_activity.params['name'], current_activity.params['conops'], dict(resources_agg), children = current_activity.params['vehicles'].append(vehicle))
+
+            # for vc in current_activity.params['vehicles']:
+            #     print(sim.entities[vc].parent)
+            #     sim.entities[vc].parent = current_activity.params['name']
             
             sim.add_vehicle(parent, sim.clock + current_activity.duration)
 
@@ -251,7 +256,7 @@ def check_activity_failure(activity, vehicle, sim):
             name = ""
             for v in vehicle:
                 name += v.name + "/"
-        logging.warning(f"  FAIL -- VEHICLE {name} failed ACTIVITY:  {activity.name}")
+        logging.warning(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {activity.name}")
         
         if not multievent:
             # Log failure to sim -- Vehicle X failed on activity Y at time Z

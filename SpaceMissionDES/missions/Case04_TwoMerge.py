@@ -4,6 +4,8 @@ from objects.events import *
 from objects.activities import *
 from objects.vehicles import Vehicle
 
+together_conops = ConOps({})
+
 # -----------------------------------------------------------------------------------------------------------------
 # MoonShip
 
@@ -14,6 +16,8 @@ meco         = Event("meco")
 begin_loiter = Event("begin_loiter")
 prop_full    = Event("prop_full")
 tli_burn     = Event("tli_burn")
+dock         = Event("dock")
+stall = Event("stall")
 ARRIVE       = Completor("ARRIVE")
 
 # *********************************************************************
@@ -41,7 +45,11 @@ moonship_conops = ConOps({
     begin_loiter.name: PredicatedActivity("WaitForProp", begin_loiter, prop_full, predicate = tanker_prop_transfered),
     
     prop_full.name: Activity("Checkout", prop_full, tli_burn, duration = 110),
-    tli_burn.name: Activity("TranslunarCoast", tli_burn, ARRIVE, duration = 10, p_fail=1/10)
+    tli_burn.name: Activity("TranslunarCoast", tli_burn, dock, duration = 10, p_fail=1/10),
+
+    dock.name: Activity("Docking", dock, stall, duration = 10, p_fail = 1/10, type="join", params={"conops": together_conops, "vehicles": ["Tanker", "MoonShip"], "name": "together"}),
+    stall.name: Activity("stall", stall, ARRIVE, duration = 30)
+
 })
 
 
@@ -83,7 +91,7 @@ tanker_conops = ConOps({
     INIT.name: PredicatedActivity("WaitForMoonship", INIT, begin_countdown, predicate=moonship_predeployed),
     
     begin_countdown.name: Activity("Countdown", begin_countdown, liftoff,  duration = 10),
-    liftoff.name:         Activity("Ascent", liftoff, meco, duration = 10, p_fail = 8/10, failure = get_spare),
+    liftoff.name:         Activity("Ascent", liftoff, meco, duration = 10, p_fail = 1/10, failure = get_spare),
     meco.name:            Activity("Rendezvous", meco, final_approach, duration = 10, p_fail = 1/10),
     final_approach.name:  Activity("Docking", final_approach, dock, duration = 10),
     dock.name:            Activity("PropTransfer", dock, undock, duration=10, p_fail = 2/10),
@@ -93,9 +101,19 @@ tanker_conops = ConOps({
     get_spare.name: Activity("PrepSpare", get_spare, begin_countdown, duration = 100)
 })
 
+dosomething = Event("dosomething")
+FINISH = Completor("FINISH")
+
+together_conops = ConOps({
+    INIT.name: Activity("DockingSuccess", INIT, dosomething, duration = 2),
+    dosomething.name: Activity("DoSomething", dosomething, FINISH, duration = 20, p_fail = 1/20)
+})
+
+moonship_conops.sequence['dock'].params['conops'] = together_conops
+
 
 # -----------------------------------------------------------------------------------------------------------------
 initial_vehicles = [
-    (0.0, Vehicle("MoonShip", moonship_conops)),
-    (0.0, Vehicle("Tanker", tanker_conops))
+    (0.0, Vehicle("MoonShip", moonship_conops, {"propellant": 0})),
+    (0.0, Vehicle("Tanker", tanker_conops, {"propellant": 100}))
 ]
