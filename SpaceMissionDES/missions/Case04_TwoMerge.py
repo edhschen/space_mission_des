@@ -50,7 +50,7 @@ moonship_conops = ConOps({
     prop_full.name: Activity("Checkout", prop_full, tli_burn, duration = 110),
     tli_burn.name: Activity("TranslunarCoast", tli_burn, dock, duration = 10, p_fail=1/10),
 
-    dock.name: Activity("Docking", dock, almost_arrive, duration = 10, p_fail = 1/10, type="join", params={"conops": together_conops, "vehicles": ["Tanker", "MoonShip"], "name": "together"}),
+    dock.name: Activity("Docking", dock, almost_arrive, duration = 10, p_fail = 1/10, agg_type="join", agg_params={"conops": together_conops, "vehicles": ["Tanker", "MoonShip"], "name": "together"}),
     almost_arrive.name: PredicatedActivity("spin", almost_arrive, finale, p_fail = 1/10, predicate = Predicate("together finished", vehicle_in_activity("together", "DoSomething"))),
     finale.name: Activity("Finale", finale, ARRIVE, duration = 2, p_fail = 1/100)
 
@@ -113,14 +113,14 @@ FINISH = Completor("FINISH")
 together_conops = ConOps({
     INIT.name: Activity("DockingSuccess", INIT, dosomething, duration = 2),
     dosomething.name: Activity("DoSomething", dosomething, dejoin, duration = 20, p_fail = 1/20),
-    dejoin.name: Activity("Decouple", dejoin, FINISH, duration = 5, p_fail = 1/10, type="dejoin")
+    dejoin.name: Activity("Decouple", dejoin, FINISH, duration = 5, p_fail = 1/10, agg_type="dejoin")
 })
 
 # populate conops that were used
-moonship_conops.sequence['dock'].params['conops'] = together_conops
+moonship_conops.sequence['dock'].agg_params['conops'] = together_conops
 
 def populate_conops(vehicle, agg_event, conops):
-    vehicle.sequence[agg_event].params['conops'] = conops
+    vehicle.sequence[agg_event].agg_params['conops'] = conops
 
 
 # -----------------------------------------------------------------------------------------------------------------

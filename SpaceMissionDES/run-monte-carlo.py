@@ -24,7 +24,7 @@ set_logging_level(logging.ERROR)
 # from missions.Case03_TankThenMoon import initial_vehicles
 from missions.Case04_TwoMerge import initial_vehicles
 
-out_dir = Path.cwd() / "results" / "test-03"
+out_dir = Path.cwd() / "results" / "test-04"
 if not out_dir.exists():
     out_dir.mkdir()
 

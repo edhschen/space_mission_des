@@ -171,43 +171,52 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
 
     # print(f"Hellooo {current_end}  on {current_activity.name}")
     if not isinstance(current_end, Failure):
-        if current_activity.type == "join":
-            # print(f"WHAT {current_activity.params['vehicles']}")
-            logging.info(f"\t  VEHICLES {current_activity.params['vehicles']} > Begin ACTIVITY:  {current_activity.name}")
-            logging.info(f"\t  VEHICLES {current_activity.params['vehicles']} > JOINED TO:  {current_activity.params['name']}")
-            # print(current_activity.params['vehicles'])
-            if len(current_activity.params['vehicles']) < 2:
+        if current_activity.agg_type == "join":
+            # print(f"WHAT {current_activity.agg_params['vehicles']}")
+            logging.info(f"\t  VEHICLES {current_activity.agg_params['vehicles']} > Begin ACTIVITY:  {current_activity.name}")
+            logging.info(f"\t  VEHICLES {current_activity.agg_params['vehicles']} > JOINED TO:  {current_activity.agg_params['name']}")
+            # print(current_activity.agg_params['vehicles'])
+            if len(current_activity.agg_params['vehicles']) < 2:
                 raise Exception("Not enough arguments provided for object collation")
             resources_agg = Counter({})
-            for vc in current_activity.params['vehicles']:
+            for vc in current_activity.agg_params['vehicles']:
                 # print(sim.entities)
                 # print(sim.entities[vc].name)
                 resources_agg += Counter(sim.entities[vc].resource)
 
             # if not name:
             #     name = ""
-            #     for vc in current_activity.params['vehicles']:
+            #     for vc in current_activity.agg_params['vehicles']:
             #         name += sim.entities[vc].name + "/"
             
-            # print(current_activity.params['conops'])
-            parent_vc = Vehicle(current_activity.params['name'], current_activity.params['conops'], dict(resources_agg), children = current_activity.params['vehicles'][:])
+            # print(current_activity.agg_params['conops'])
+            parent_vc = Vehicle(current_activity.agg_params['name'], current_activity.agg_params['conops'], dict(resources_agg), children = current_activity.agg_params['vehicles'][:])
 
-            for vc in current_activity.params['vehicles']:
+            for vc in current_activity.agg_params['vehicles']:
                 # print(f"Currently checking {vc}")
                 # print(sim.entities[vc].parent)
-                sim.entities[vc].parent = current_activity.params['name']
+                sim.entities[vc].parent = current_activity.agg_params['name']
             
             sim.add_vehicle(parent_vc, sim.clock + current_activity.duration)
 
-        if current_activity.type == "dejoin":
+        if current_activity.agg_type == "dejoin":
             logging.info(f"\t  VEHICLES {vehicle.name} > decoupled CHILDREN:  {vehicle.children}")
             for child in vehicle.children:
                 sim.entities[child].parent = None
             vehicle.children = []
 
-        # if current_activity.type == "dropchild":
+        if current_activity.agg_type == "dropchild":
+            for vc in current_activity.agg_params['vehicles']:
+                try:
+                    sim.entities[vc].parent = None
+                    vehicle.children.remove(vc)
+                except:
+                    raise Exception(f"Child entity {vc} does not exist")
 
-        # if current_activity.type == "addchild":
+        if current_activity.agg_type == "addchild":
+            vehicle.children.append(current_activity.agg_params['vehicles'][:])
+            for vc in current_activity.agg_params['vehicles']:
+                sim.entities[vc].parent = vehicle.name
     
     if isinstance(current_end, Failure):
         next_event = FailureEvent(

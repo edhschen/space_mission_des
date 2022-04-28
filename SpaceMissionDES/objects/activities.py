@@ -14,8 +14,13 @@ class Activity:
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
     resource_change: dict = field(default_factory = dict)
-    type: str = ""   # either join or dejoin
-    params: dict = field(default_factory = dict) # list of vehicles to join or dejoin {conops: conops, vehicles: [va, vb]}
+    agg_type: str = ""   # either join, dejoin, dropchild, addchild
+    agg_params: dict = field(default_factory = dict) 
+    # dict of agg params 
+    #   FOR join {conops: conops, vehicles: [va, vb], name: "va-vb"}
+    #   FOR dejoin N/A
+    #   FOR addchild {vehicles: [va, vb]}
+    #   FOR dropchild {vehicles: [va, vb]}
 
 
 @dataclass
@@ -28,8 +33,8 @@ class PredicatedActivity:
     p_fail: float = 0    # probability that the activity will fail to be completed (i.e. failed launch)
     failure: Event = Failure()
     resource_change: dict = field(default_factory = dict)
-    type: str = ""
-    params: list = field(default_factory = list)
+    agg_type: str = ""
+    agg_params: list = field(default_factory = list)
 
 #######################################################################################################################
 # ConOps
