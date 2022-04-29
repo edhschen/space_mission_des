@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "/User/albert/.pyenv/versions/tf1.15/bin/python",
+    "-m", "ipykernel",
+    "-f", "{connection_file}"
+  ],
+  "display_name": "SpaceMissionDES",
+  "language": "python"
+}

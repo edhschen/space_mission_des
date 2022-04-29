@@ -1,8 +1,6 @@
 # Case04_PropAggregation
 # Standard Library
 import logging
-from copy import deepcopy
-from turtle import undo
 # Dependencies
 from scipy.stats import *
 # SpaceMissionDES
@@ -28,14 +26,13 @@ pra = {
 }
 
 # Fleet Management and Requirements
-N_tankers_available = 4
-N_transfers_required = 10
+N_transfers_required = 6
+N_tankers_available = 60
 
 # -----------------------------------------------------------------------------------------------------------------
 # Vehicle and ConOps Settings
 # -----------------------------------------------------------------------------------------------------------------
 # MTV - Mars Transfer Vehicle
-spares_MTV = 0
 
 # Events
 INIT = Event("INIT")
@@ -73,7 +70,6 @@ conops_MTV = ConOps({
     capture.name:  PredicatedActivity("Propellant Aggregation", capture, filled, predicate=until_N_transfers),
     filled.name:   Activity("Final Checkout", filled, tmi_burn, duration=2, delay=weibull_min(c=0.5, loc=0, scale=0.1), p_fail=pra["checkout"]),  #TODO: add check to see if clock is < critical value
     tmi_burn.name: Activity("Begin Mars Transit", tmi_burn, DONE, duration=0, p_fail=pra["mps_burn"]),
-
     # Contigencies
     scrub.name: Activity("Recycle", scrub, INIT, duration=0, delay=weibull_min(c=1, loc=0, scale=4)),
 })
@@ -96,7 +92,7 @@ spare = Event("spare")
 no_more_spares = Event("no_more_spares")
 
 # Predicates
-after_MTV_deploy = Predicate("Wait for MTV", vehicle_in_activity("MTV", "Propellant Aggregation"))
+after_MTV_deploy = Predicate("Wait for MTV", vehicle_in_activity(vehicle="MTV", activity="Propellant Aggregation"))
 
 # Branching Events
 def limit_spares(sim, vehicle):          # branching logic functions always take (sim, vehicle)
@@ -123,15 +119,12 @@ conops_Tanker = ConOps({
     INIT.name:     PredicatedActivity("Wait for MTV Deploy", INIT, limit_tanker_spares, predicate=after_MTV_deploy),
 
     begin.name:    Activity("Countdown", begin, launch, duration=0, p_fail=pra["scrub"], failure=scrub),
-
     launch.name:   Activity("Ascent", launch, burnout, duration=1, p_fail=pra["ascent"], failure=spare, update={'flights': 1}),
     burnout.name:  Activity("Orbit Insertion", burnout, capture, duration=2, p_fail=pra["mps_burn"], failure=spare),
     capture.name:  Activity("Redezvous", capture, approach, duration = 1, p_fail=pra["RPO"]),
     approach.name: Activity("RPOD", approach, dock, duration = 1, p_fail=pra["dock"]),
     dock.name:     Activity("Prop Transfer", dock, undock, duration=0.5, update={'transfers': 1}),  # TODO: add delay
-    
     undock.name:   Activity("Return to Base", undock, until_n_tankers, duration = 1, p_fail=pra["dock"]), # TODO: add restart conditions
-    
     land.name:     Activity("End Tanker Mission", land, DONE, duration=0),
 
     # Contigencies

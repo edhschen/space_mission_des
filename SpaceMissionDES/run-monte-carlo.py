@@ -25,13 +25,13 @@ set_logging_level(logging.ERROR)
 # from missions.Mars_01 import initial_vehicles
 from missions.Case04_PropAggregation import initial_vehicles
 
-out_dir = Path.cwd() / "results" / "Case04-r04_10Tx-4Tk"
+out_dir = Path.cwd() / "results" / "Case04-r05__Tx06-Tk60"
 if not out_dir.exists():
     out_dir.mkdir()
 
 if __name__ == "__main__":
 
-    mc_results = run_montecarlo(initial_vehicles, N := 1000, run_parallel=True)
+    mc_results = run_montecarlo(initial_vehicles, N := 6000, run_parallel=True)
 
     success_rate = sum(mc_results.groupby("replicant").first().outcome) / N
 
