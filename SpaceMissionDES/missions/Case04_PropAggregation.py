@@ -18,16 +18,16 @@ initial_vehicles = []
 # Probabilistic Inputs
 pra = {
     "scrub": 1/4,
-    "ascent": 1/100,
+    "ascent": 2/100,
     "RPO": 1/500,
-    "mps_burn": 1/200,
+    "mps_burn": 1/250,
     "dock": 1/200,
     "checkout": 1/1000
 }
 
 # Fleet Management and Requirements
-N_transfers_required = 6
-N_tankers_available = 60
+N_transfers_required = 1
+N_tankers_available = 2
 
 # -----------------------------------------------------------------------------------------------------------------
 # Vehicle and ConOps Settings
@@ -64,7 +64,7 @@ conops_MTV = ConOps({
 
     # Nominal
     INIT.name:     Activity("Countdown", INIT, launch, duration=3, p_fail=pra["scrub"], failure=scrub),
-    launch.name:   Activity("Ascent", launch, burnout, duration=1, p_fail=pra["ascent"]),
+    launch.name:   Activity("Ascent", launch, burnout, duration=1, p_fail=1/500),
     burnout.name:  Activity("Orbit Insertion", burnout, capture, duration=2, p_fail=pra["mps_burn"]),
     # capture.name:  Activity("Propellant Aggregation", capture, filled, duration = 100),
     capture.name:  PredicatedActivity("Propellant Aggregation", capture, filled, predicate=until_N_transfers),
