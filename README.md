@@ -1,5 +1,7 @@
 # SpaceMissionDES
-Implementation of a discrete event simulation used for studying duration and reliability of space missions.
+Implementation of a discrete event simulation used for studying duration and reliability of space missions. An overview video can be found at the following link:
+
+https://mediaspace.gatech.edu/media/%5BTeam+35%5D+Comparing+Space+Mission+Designs+via+Discrete+Event+Simulation/1_cua29rik/254858153
 
 ### requirements
 python 3.10 (scipy, tqdm, pandas)
