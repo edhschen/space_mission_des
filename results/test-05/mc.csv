@@ -1,0 +1,1010 @@
+replicant,outcome,duration,anomaly_count,anomaly_time,anomaly_vehicle,anomaly_activity
+2,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+1,False,3111.0,2,3111.0,MOI-MCPS,Lunar Insertion
+0,False,3116.0,2,3100.0,HAB,Countdown
+3,True,3450.0,0,,,
+7,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+4,True,3450.0,0,,,
+5,True,3450.0,0,,,
+6,True,3450.0,0,,,
+8,False,3116.0,2,3100.0,HAB,Countdown
+9,True,3450.0,0,,,
+10,False,3450.0,2,3450.0,Orion-Pickup,Crew Landing on Earth
+13,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+11,True,3450.0,0,,,
+12,True,3450.0,0,,,
+17,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+16,False,3103.0,2,3103.0,Orion,Countdown
+19,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+15,True,3450.0,0,,,
+14,True,3450.0,0,,,
+20,False,3104.0,2,3104.0,MOI-MCPS,Ascent
+18,True,3450.0,0,,,
+24,False,4.0,2,4.0,SEP-01 + TEI-MCPS,Ascent
+22,False,3113.0,2,3113.0,Orion,Lunar Insertion
+25,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+26,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+21,False,3422.0,2,3422.0,Orion-Pickup,Lunar Transit
+23,True,3450.0,0,,,
+27,True,3450.0,0,,,
+28,True,3450.0,0,,,
+29,False,3421.0,2,3421.0,MLS,Rendezvous of MCT with HAB
+30,True,3450.0,0,,,
+32,False,3116.0,2,3100.0,HAB,Countdown
+31,True,3450.0,0,,,
+33,True,3450.0,0,,,
+34,True,3450.0,0,,,
+35,True,3450.0,0,,,
+36,True,3450.0,0,,,
+39,False,3105.0,2,3100.0,HAB,Countdown
+39,False,3105.0,3,3105.0,TMI-MCPS,Ascent
+37,True,3450.0,0,,,
+38,True,3450.0,0,,,
+43,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+40,False,3116.0,2,3100.0,HAB,Countdown
+41,False,3106.0,2,3100.0,HAB,Countdown
+41,False,3106.0,3,3106.0,Orion,Ascent
+45,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+44,False,3105.0,2,3105.0,MOI-MCPS,Lunar Transit
+42,True,3450.0,0,,,
+46,True,3450.0,0,,,
+47,True,3450.0,0,,,
+50,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+49,False,3106.0,2,3106.0,Orion,Ascent
+48,True,3450.0,0,,,
+52,False,3116.0,2,3100.0,HAB,Countdown
+54,False,3113.0,2,3113.0,HAB + MOI-MCPS + TMI-MCPS,Rendezvous-ing
+53,True,3450.0,0,,,
+51,True,3450.0,0,,,
+58,False,1462.0,2,1462.0,SEP-02 + EOI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+59,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+57,False,3106.0,2,3106.0,TMI-MCPS,Lunar Transit
+56,True,3450.0,0,,,
+55,True,3450.0,0,,,
+60,False,1506.0,2,1506.0,SEP-03 + MLS,"Mars Transit, SEP Jettisoned"
+64,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+61,True,3450.0,0,,,
+62,False,3103.0,2,3103.0,Orion,Countdown
+66,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+63,True,3450.0,0,,,
+65,True,3450.0,0,,,
+70,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+67,True,3450.0,0,,,
+68,True,3450.0,0,,,
+69,True,3450.0,0,,,
+73,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+71,True,3450.0,0,,,
+75,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+72,True,3450.0,0,,,
+77,False,3112.0,2,3112.0,HAB + MOI-MCPS,Rendezvous-ing
+76,False,3116.0,2,3100.0,HAB,Countdown
+80,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+81,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+74,True,3450.0,0,,,
+82,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+79,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+83,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+78,False,3120.0,2,3120.0,HAB,Rendezvous of HAB with Pre-deployed EOI
+86,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+84,True,3450.0,0,,,
+85,True,3450.0,0,,,
+87,True,3450.0,0,,,
+88,True,3450.0,0,,,
+92,False,3116.0,2,3100.0,HAB,Countdown
+89,True,3450.0,0,,,
+94,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+90,True,3450.0,0,,,
+91,True,3450.0,0,,,
+93,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+95,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+96,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+100,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+101,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+97,True,3450.0,0,,,
+98,True,3450.0,0,,,
+99,True,3450.0,0,,,
+102,True,3450.0,0,,,
+104,True,3450.0,0,,,
+103,True,3450.0,0,,,
+105,True,3450.0,0,,,
+106,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+109,False,3103.0,2,3103.0,Orion,Countdown
+107,True,3450.0,0,,,
+112,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+108,True,3450.0,0,,,
+114,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+110,True,3450.0,0,,,
+111,True,3450.0,0,,,
+115,False,3105.0,2,3105.0,TMI-MCPS,Ascent
+116,False,3120.0,2,3120.0,HAB,Rendezvous of HAB with Pre-deployed EOI
+113,True,3450.0,0,,,
+119,False,5.0,2,5.0,SEP-01 + TEI-MCPS,Mars Transit
+120,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+117,True,3450.0,0,,,
+118,True,3450.0,0,,,
+123,False,3104.0,2,3100.0,HAB,Countdown
+123,False,3104.0,3,3104.0,MOI-MCPS,Ascent
+122,True,3450.0,0,,,
+121,True,3450.0,0,,,
+125,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+124,True,3450.0,0,,,
+129,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+126,False,3420.0,2,3420.0,MLS,MCT Launch to HAB
+130,False,3104.0,2,3104.0,HAB,Lunar Transit
+127,True,3450.0,0,,,
+128,True,3450.0,0,,,
+132,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+134,False,3420.0,2,3420.0,MLS,MCT Launch to HAB
+131,True,3450.0,0,,,
+133,True,3450.0,0,,,
+135,True,3450.0,0,,,
+136,False,1506.0,2,1506.0,SEP-03 + MLS,"Mars Transit, SEP Jettisoned"
+140,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+137,True,3450.0,0,,,
+138,True,3450.0,0,,,
+139,True,3450.0,0,,,
+142,False,3103.0,2,3103.0,Orion,Countdown
+141,True,3450.0,0,,,
+143,False,3104.0,2,3104.0,MOI-MCPS,Ascent
+146,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+144,True,3450.0,0,,,
+145,True,3450.0,0,,,
+147,True,3450.0,0,,,
+148,True,3450.0,0,,,
+150,False,3114.0,2,3114.0,HAB + MOI-MCPS + TMI-MCPS,"Mars Transfer Burn, TMI Jettisoned"
+149,True,3450.0,0,,,
+151,True,3450.0,0,,,
+152,True,3450.0,0,,,
+153,True,3450.0,0,,,
+154,True,3450.0,0,,,
+155,True,3450.0,0,,,
+156,True,3450.0,0,,,
+157,True,3450.0,0,,,
+158,False,3116.0,2,3100.0,HAB,Countdown
+159,False,3104.0,2,3104.0,HAB,Lunar Transit
+162,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+161,False,3103.0,2,3103.0,Orion,Countdown
+164,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+160,True,3450.0,0,,,
+166,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+163,True,3450.0,0,,,
+169,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+170,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+165,True,3450.0,0,,,
+168,True,3450.0,0,,,
+167,True,3450.0,0,,,
+174,False,3103.0,2,3103.0,Orion,Countdown
+172,False,3114.0,2,3114.0,HAB + MOI-MCPS,"Mars Capture Burn, MOI Jettisoned"
+171,True,3450.0,0,,,
+173,True,3450.0,0,,,
+176,True,3450.0,0,,,
+175,True,3450.0,0,,,
+180,False,5.0,2,5.0,SEP-02 + EOI-MCPS,Mars Transit
+177,True,3450.0,0,,,
+179,False,3103.0,2,3103.0,Orion,Countdown
+178,True,3450.0,0,,,
+183,True,3450.0,0,,,
+181,True,3450.0,0,,,
+182,True,3450.0,0,,,
+185,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+184,True,3450.0,0,,,
+187,False,3116.0,2,3100.0,HAB,Countdown
+188,True,3450.0,0,,,
+186,True,3450.0,0,,,
+191,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+189,True,3450.0,0,,,
+190,True,3450.0,0,,,
+192,True,3450.0,0,,,
+193,True,3450.0,0,,,
+197,False,1462.0,2,1462.0,SEP-01 + TEI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+194,True,3450.0,0,,,
+195,False,3420.0,2,3420.0,MLS,MCT Launch to HAB
+200,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+196,True,3450.0,0,,,
+198,True,3450.0,0,,,
+199,True,3450.0,0,,,
+202,False,3116.0,2,3100.0,HAB,Countdown
+201,True,3450.0,0,,,
+205,False,3120.0,2,3120.0,HAB,Rendezvous of HAB with Pre-deployed EOI
+203,True,3450.0,0,,,
+207,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+204,True,3450.0,0,,,
+208,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+206,True,3450.0,0,,,
+209,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+212,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+211,False,3116.0,2,3100.0,HAB,Countdown
+215,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+213,True,3450.0,0,,,
+210,True,3450.0,0,,,
+214,True,3450.0,0,,,
+216,True,3450.0,0,,,
+217,True,3450.0,0,,,
+218,True,3450.0,0,,,
+219,True,3450.0,0,,,
+221,False,3420.0,2,3420.0,MLS,MCT Launch to HAB
+220,True,3450.0,0,,,
+222,True,3450.0,0,,,
+225,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+227,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+223,True,3450.0,0,,,
+224,False,3420.0,2,3420.0,MLS,MCT Launch to HAB
+226,True,3450.0,0,,,
+231,False,4.0,2,4.0,SEP-01 + TEI-MCPS,Ascent
+228,True,3450.0,0,,,
+229,True,3450.0,0,,,
+230,True,3450.0,0,,,
+235,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+234,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+237,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+232,True,3450.0,0,,,
+233,True,3450.0,0,,,
+238,False,3106.0,2,3106.0,TMI-MCPS,Lunar Transit
+236,True,3450.0,0,,,
+241,False,3106.0,2,3106.0,Orion,Ascent
+242,False,1462.0,2,1462.0,SEP-01 + TEI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+239,True,3450.0,0,,,
+244,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+246,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+240,True,3450.0,0,,,
+247,False,3106.0,2,3106.0,Orion,Ascent
+243,True,3450.0,0,,,
+245,True,3450.0,0,,,
+251,False,4.0,2,4.0,SEP-01 + TEI-MCPS,Ascent
+250,False,3103.0,2,3103.0,Orion,Countdown
+248,True,3450.0,0,,,
+249,True,3450.0,0,,,
+252,True,3450.0,0,,,
+253,True,3450.0,0,,,
+255,False,3112.0,2,3100.0,HAB,Countdown
+255,False,3112.0,3,3103.0,HAB,Countdown
+255,False,3112.0,4,3112.0,TMI-MCPS,Lunar Insertion
+254,True,3450.0,0,,,
+257,False,3107.0,2,3107.0,Orion,Lunar Transit
+256,True,3450.0,0,,,
+259,True,3450.0,0,,,
+258,True,3450.0,0,,,
+262,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+260,True,3450.0,0,,,
+261,True,3450.0,0,,,
+263,True,3450.0,0,,,
+264,True,3450.0,0,,,
+266,False,3111.0,2,3111.0,HAB,Rendezvous-ing
+265,True,3450.0,0,,,
+267,True,3450.0,0,,,
+271,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+269,False,3116.0,2,3100.0,HAB,Countdown
+268,True,3450.0,0,,,
+270,True,3450.0,0,,,
+275,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+272,True,3450.0,0,,,
+273,False,3450.0,2,3450.0,Orion-Pickup,Crew Landing on Earth
+274,True,3450.0,0,,,
+277,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+278,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+276,True,3450.0,0,,,
+282,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+283,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+279,True,3450.0,0,,,
+280,True,3450.0,0,,,
+281,True,3450.0,0,,,
+285,True,3450.0,0,,,
+286,True,3450.0,0,,,
+284,True,3450.0,0,,,
+287,True,3450.0,0,,,
+291,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+289,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+293,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+288,True,3450.0,0,,,
+290,True,3450.0,0,,,
+292,True,3450.0,0,,,
+296,False,3103.0,2,3103.0,Orion,Countdown
+294,True,3450.0,0,,,
+295,True,3450.0,0,,,
+298,True,3450.0,0,,,
+297,True,3450.0,0,,,
+299,True,3450.0,0,,,
+300,True,3450.0,0,,,
+301,True,3450.0,0,,,
+304,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+302,True,3450.0,0,,,
+305,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+303,True,3450.0,0,,,
+306,True,3450.0,0,,,
+309,True,3450.0,0,,,
+308,True,3450.0,0,,,
+307,True,3450.0,0,,,
+312,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+313,False,3105.0,2,3105.0,MOI-MCPS,Lunar Transit
+310,True,3450.0,0,,,
+311,True,3450.0,0,,,
+314,True,3450.0,0,,,
+315,True,3450.0,0,,,
+318,False,3103.0,2,3103.0,Orion,Countdown
+320,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+316,True,3450.0,0,,,
+317,True,3450.0,0,,,
+319,False,3112.0,2,3112.0,HAB + MOI-MCPS,Rendezvous-ing
+324,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+321,True,3450.0,0,,,
+322,True,3450.0,0,,,
+323,True,3450.0,0,,,
+325,True,3450.0,0,,,
+327,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+326,True,3450.0,0,,,
+330,False,3105.0,2,3105.0,TMI-MCPS,Ascent
+331,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+328,True,3450.0,0,,,
+329,True,3450.0,0,,,
+333,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+334,False,3103.0,2,3103.0,Orion,Countdown
+332,True,3450.0,0,,,
+338,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+335,False,3420.0,2,3420.0,MLS,MCT Launch to HAB
+336,True,3450.0,0,,,
+337,True,3450.0,0,,,
+339,True,3450.0,0,,,
+340,True,3450.0,0,,,
+344,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+341,True,3450.0,0,,,
+342,True,3450.0,0,,,
+347,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+343,True,3450.0,0,,,
+348,False,3106.0,2,3106.0,Orion,Ascent
+345,True,3450.0,0,,,
+346,True,3450.0,0,,,
+349,False,3116.0,2,3100.0,HAB,Countdown
+353,False,5.0,2,5.0,SEP-01 + TEI-MCPS,Mars Transit
+350,True,3450.0,0,,,
+351,True,3450.0,0,,,
+355,False,3105.0,2,3105.0,TMI-MCPS,Ascent
+352,True,3450.0,0,,,
+354,False,3430.0,2,3430.0,Orion-Pickup,Descent Burn Back to Earth
+356,True,3450.0,0,,,
+357,True,3450.0,0,,,
+358,True,3450.0,0,,,
+359,True,3450.0,0,,,
+360,True,3450.0,0,,,
+363,False,3103.0,2,3103.0,Orion,Countdown
+361,True,3450.0,0,,,
+364,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+362,False,3421.0,2,3421.0,Orion-Pickup,Ascent
+367,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+369,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+366,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+370,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+368,False,3113.0,2,3113.0,HAB + MOI-MCPS + TMI-MCPS,Rendezvous-ing
+365,True,3450.0,0,,,
+371,True,3450.0,0,,,
+374,False,3104.0,2,3104.0,MOI-MCPS,Ascent
+376,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+372,True,3450.0,0,,,
+373,True,3450.0,0,,,
+379,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+377,False,3106.0,2,3106.0,Orion,Ascent
+381,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+375,True,3450.0,0,,,
+378,True,3450.0,0,,,
+380,True,3450.0,0,,,
+382,False,3420.0,2,3420.0,MLS,MCT Launch to HAB
+386,False,3105.0,2,3105.0,TMI-MCPS,Ascent
+383,True,3450.0,0,,,
+384,True,3450.0,0,,,
+385,True,3450.0,0,,,
+387,True,3450.0,0,,,
+391,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+388,True,3450.0,0,,,
+389,True,3450.0,0,,,
+390,True,3450.0,0,,,
+392,False,3430.0,2,3430.0,Orion-Pickup,Descent Burn Back to Earth
+393,True,3450.0,0,,,
+397,False,1462.0,2,1462.0,SEP-02 + EOI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+394,True,3450.0,0,,,
+399,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+395,True,3450.0,0,,,
+396,True,3450.0,0,,,
+400,False,3116.0,2,3100.0,HAB,Countdown
+402,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+398,True,3450.0,0,,,
+401,True,3450.0,0,,,
+404,True,3450.0,0,,,
+405,True,3450.0,0,,,
+403,True,3450.0,0,,,
+408,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+410,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+411,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+406,True,3450.0,0,,,
+412,False,3103.0,2,3103.0,Orion,Countdown
+407,True,3450.0,0,,,
+413,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+415,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+417,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+409,True,3450.0,0,,,
+419,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+414,True,3450.0,0,,,
+416,True,3450.0,0,,,
+422,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+418,True,3450.0,0,,,
+420,True,3450.0,0,,,
+421,True,3450.0,0,,,
+423,True,3450.0,0,,,
+424,True,3450.0,0,,,
+427,False,3103.0,2,3103.0,Orion,Countdown
+425,True,3450.0,0,,,
+426,True,3450.0,0,,,
+428,True,3450.0,0,,,
+429,True,3450.0,0,,,
+430,True,3450.0,0,,,
+431,True,3450.0,0,,,
+434,False,1462.0,2,1462.0,SEP-01 + TEI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+433,False,3116.0,2,3100.0,HAB,Countdown
+432,True,3450.0,0,,,
+438,False,4.0,2,4.0,SEP-01 + TEI-MCPS,Ascent
+437,False,3112.0,2,3112.0,TMI-MCPS,Lunar Insertion
+435,True,3450.0,0,,,
+439,False,3104.0,2,3104.0,MOI-MCPS,Ascent
+436,True,3450.0,0,,,
+440,False,3103.0,2,3103.0,HAB,Ascent
+444,False,3105.0,2,3105.0,TMI-MCPS,Ascent
+441,True,3450.0,0,,,
+442,True,3450.0,0,,,
+443,True,3450.0,0,,,
+448,False,4.0,2,4.0,SEP-01 + TEI-MCPS,Ascent
+446,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+449,False,3105.0,2,3105.0,TMI-MCPS,Ascent
+445,True,3450.0,0,,,
+447,True,3450.0,0,,,
+450,True,3450.0,0,,,
+454,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+451,True,3450.0,0,,,
+452,True,3450.0,0,,,
+453,False,3421.0,2,3421.0,Orion-Pickup,Ascent
+455,True,3450.0,0,,,
+456,True,3450.0,0,,,
+457,True,3450.0,0,,,
+458,True,3450.0,0,,,
+462,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+463,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+459,True,3450.0,0,,,
+460,True,3450.0,0,,,
+465,False,3103.0,2,3103.0,Orion,Countdown
+461,True,3450.0,0,,,
+468,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+464,True,3450.0,0,,,
+469,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+467,True,3450.0,0,,,
+466,True,3450.0,0,,,
+473,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+471,True,3450.0,0,,,
+470,True,3450.0,0,,,
+472,True,3450.0,0,,,
+477,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+474,True,3450.0,0,,,
+475,True,3450.0,0,,,
+476,True,3450.0,0,,,
+480,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+478,True,3450.0,0,,,
+479,True,3450.0,0,,,
+482,False,3114.0,2,3114.0,HAB + MOI-MCPS,"Mars Capture Burn, MOI Jettisoned"
+481,True,3450.0,0,,,
+484,True,3450.0,0,,,
+483,True,3450.0,0,,,
+485,True,3450.0,0,,,
+486,True,3450.0,0,,,
+487,True,3450.0,0,,,
+488,True,3450.0,0,,,
+490,True,3450.0,0,,,
+489,True,3450.0,0,,,
+493,False,1462.0,2,1462.0,SEP-01 + TEI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+494,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+495,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+492,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+491,True,3450.0,0,,,
+498,False,3110.0,2,3110.0,HAB,Lunar Insertion
+496,True,3450.0,0,,,
+500,False,3105.0,2,3105.0,TMI-MCPS,Ascent
+501,False,1462.0,2,1462.0,SEP-01 + TEI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+502,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+497,True,3450.0,0,,,
+499,False,3421.0,2,3421.0,Orion-Pickup,Ascent
+504,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+506,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+508,False,3116.0,2,3100.0,HAB,Countdown
+507,True,3450.0,0,,,
+503,True,3450.0,0,,,
+505,True,3450.0,0,,,
+511,False,3114.0,2,3114.0,HAB + MOI-MCPS + TMI-MCPS,"Mars Transfer Burn, TMI Jettisoned"
+509,True,3450.0,0,,,
+510,True,3450.0,0,,,
+512,True,3450.0,0,,,
+516,False,3105.0,2,3105.0,MOI-MCPS,Lunar Transit
+517,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+513,True,3450.0,0,,,
+514,True,3450.0,0,,,
+515,True,3450.0,0,,,
+519,False,3103.0,2,3103.0,Orion,Countdown
+521,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+518,True,3450.0,0,,,
+520,True,3450.0,0,,,
+522,True,3450.0,0,,,
+526,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+523,True,3450.0,0,,,
+525,True,3450.0,0,,,
+524,True,3450.0,0,,,
+527,True,3450.0,0,,,
+528,True,3450.0,0,,,
+531,False,3103.0,2,3103.0,Orion,Countdown
+529,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+534,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+530,True,3450.0,0,,,
+536,False,3103.0,2,3100.0,HAB,Countdown
+536,False,3103.0,3,3103.0,Orion,Countdown
+532,True,3450.0,0,,,
+535,True,3450.0,0,,,
+537,False,3111.0,2,3111.0,MOI-MCPS,Lunar Insertion
+533,True,3450.0,0,,,
+538,False,3103.0,2,3103.0,Orion,Countdown
+541,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+543,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+540,True,3450.0,0,,,
+542,True,3450.0,0,,,
+539,True,3450.0,0,,,
+544,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+548,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+549,False,3105.0,2,3105.0,MOI-MCPS,Lunar Transit
+547,True,3450.0,0,,,
+546,True,3450.0,0,,,
+545,True,3450.0,0,,,
+552,False,3116.0,2,3100.0,HAB,Countdown
+553,False,3106.0,2,3106.0,Orion,Ascent
+554,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+550,True,3450.0,0,,,
+556,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+551,True,3450.0,0,,,
+559,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+560,False,5.0,2,5.0,SEP-02 + EOI-MCPS,Mars Transit
+558,False,3111.0,2,3111.0,HAB,Rendezvous-ing
+555,True,3450.0,0,,,
+561,False,3110.0,2,3110.0,HAB,Lunar Insertion
+562,False,3111.0,2,3111.0,HAB,Rendezvous-ing
+557,True,3450.0,0,,,
+563,False,3119.0,2,3100.0,HAB,Countdown
+563,False,3119.0,3,3103.0,HAB,Countdown
+564,True,3450.0,0,,,
+565,True,3450.0,0,,,
+567,True,3450.0,0,,,
+566,True,3450.0,0,,,
+570,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+568,True,3450.0,0,,,
+572,False,3103.0,2,3103.0,Orion,Countdown
+569,True,3450.0,0,,,
+573,False,3116.0,2,3100.0,HAB,Countdown
+571,True,3450.0,0,,,
+574,True,3450.0,0,,,
+575,True,3450.0,0,,,
+576,True,3450.0,0,,,
+577,True,3450.0,0,,,
+580,False,3103.0,2,3103.0,Orion,Countdown
+578,True,3450.0,0,,,
+579,True,3450.0,0,,,
+583,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+582,False,3116.0,2,3100.0,HAB,Countdown
+581,True,3450.0,0,,,
+587,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+586,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+584,True,3450.0,0,,,
+589,False,3103.0,2,3103.0,Orion,Countdown
+590,False,5.0,2,5.0,SEP-01 + TEI-MCPS,Mars Transit
+585,True,3450.0,0,,,
+593,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+588,True,3450.0,0,,,
+592,False,3116.0,2,3100.0,HAB,Countdown
+596,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+591,True,3450.0,0,,,
+594,True,3450.0,0,,,
+595,True,3450.0,0,,,
+597,True,3450.0,0,,,
+599,False,3112.0,2,3112.0,HAB + MOI-MCPS,Rendezvous-ing
+600,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+598,True,3450.0,0,,,
+601,True,3450.0,0,,,
+602,True,3450.0,0,,,
+604,True,3450.0,0,,,
+605,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+603,True,3450.0,0,,,
+606,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+610,False,3112.0,2,3112.0,TMI-MCPS,Lunar Insertion
+611,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+609,True,3450.0,0,,,
+608,True,3450.0,0,,,
+607,True,3450.0,0,,,
+615,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+612,True,3450.0,0,,,
+614,True,3450.0,0,,,
+613,True,3450.0,0,,,
+616,True,3450.0,0,,,
+617,False,3114.0,2,3114.0,HAB + MOI-MCPS + TMI-MCPS,"Mars Transfer Burn, TMI Jettisoned"
+618,True,3450.0,0,,,
+622,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+619,True,3450.0,0,,,
+620,True,3450.0,0,,,
+621,True,3450.0,0,,,
+623,False,3421.0,2,3421.0,Orion-Pickup,Ascent
+626,False,3103.0,2,3103.0,Orion,Countdown
+624,True,3450.0,0,,,
+625,True,3450.0,0,,,
+629,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+631,False,3103.0,2,3103.0,Orion,Countdown
+628,True,3450.0,0,,,
+627,True,3450.0,0,,,
+632,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+630,True,3450.0,0,,,
+633,False,3421.0,2,3421.0,Orion-Pickup,Ascent
+634,True,3450.0,0,,,
+635,True,3450.0,0,,,
+638,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+636,True,3450.0,0,,,
+640,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+641,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+643,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+637,True,3450.0,0,,,
+645,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+639,True,3450.0,0,,,
+647,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+642,True,3450.0,0,,,
+644,True,3450.0,0,,,
+648,False,3112.0,2,3112.0,TMI-MCPS,Lunar Insertion
+646,True,3450.0,0,,,
+649,True,3450.0,0,,,
+651,False,3112.0,2,3112.0,HAB + MOI-MCPS,Rendezvous-ing
+650,False,3420.0,2,3420.0,MLS,MCT Launch to HAB
+652,True,3450.0,0,,,
+654,True,3450.0,0,,,
+653,True,3450.0,0,,,
+655,True,3450.0,0,,,
+656,True,3450.0,0,,,
+657,True,3450.0,0,,,
+658,True,3450.0,0,,,
+659,True,3450.0,0,,,
+663,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+660,True,3450.0,0,,,
+664,False,3116.0,2,3100.0,HAB,Countdown
+661,True,3450.0,0,,,
+662,True,3450.0,0,,,
+665,True,3450.0,0,,,
+666,True,3450.0,0,,,
+667,True,3450.0,0,,,
+668,True,3450.0,0,,,
+670,False,3105.0,2,3105.0,TMI-MCPS,Ascent
+673,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+669,True,3450.0,0,,,
+674,False,3116.0,2,3100.0,HAB,Countdown
+672,True,3450.0,0,,,
+671,True,3450.0,0,,,
+675,True,3450.0,0,,,
+676,True,3450.0,0,,,
+677,True,3450.0,0,,,
+680,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+678,True,3450.0,0,,,
+679,False,3116.0,2,3100.0,HAB,Countdown
+684,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+681,False,3111.0,2,3111.0,MOI-MCPS,Lunar Insertion
+682,True,3450.0,0,,,
+683,True,3450.0,0,,,
+688,False,3104.0,2,3104.0,MOI-MCPS,Ascent
+685,True,3450.0,0,,,
+686,True,3450.0,0,,,
+687,False,3421.0,2,3421.0,Orion-Pickup,Ascent
+690,False,3103.0,2,3103.0,Orion,Countdown
+693,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+689,True,3450.0,0,,,
+691,False,3420.0,2,3420.0,MLS,MCT Launch to HAB
+692,True,3450.0,0,,,
+696,False,3116.0,2,3100.0,HAB,Countdown
+694,True,3450.0,0,,,
+695,True,3450.0,0,,,
+697,True,3450.0,0,,,
+698,True,3450.0,0,,,
+699,True,3450.0,0,,,
+700,True,3450.0,0,,,
+703,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+701,True,3450.0,0,,,
+705,False,3111.0,2,3111.0,MOI-MCPS,Lunar Insertion
+702,True,3450.0,0,,,
+704,True,3450.0,0,,,
+706,True,3450.0,0,,,
+710,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+708,True,3450.0,0,,,
+707,True,3450.0,0,,,
+709,True,3450.0,0,,,
+711,True,3450.0,0,,,
+712,True,3450.0,0,,,
+715,False,5.0,2,5.0,SEP-02 + EOI-MCPS,Mars Transit
+713,True,3450.0,0,,,
+714,True,3450.0,0,,,
+717,False,3103.0,2,3103.0,Orion,Countdown
+720,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+716,True,3450.0,0,,,
+718,True,3450.0,0,,,
+719,True,3450.0,0,,,
+723,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+721,False,3428.0,2,3428.0,Orion-Pickup,Lunar Insertion
+726,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+725,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+727,False,3103.0,2,3103.0,Orion,Countdown
+722,True,3450.0,0,,,
+724,True,3450.0,0,,,
+730,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+732,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+728,True,3450.0,0,,,
+729,True,3450.0,0,,,
+734,False,3105.0,2,3105.0,MOI-MCPS,Lunar Transit
+736,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+735,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+731,True,3450.0,0,,,
+738,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+733,True,3450.0,0,,,
+737,True,3450.0,0,,,
+741,False,3120.0,2,3120.0,HAB,Rendezvous of HAB with Pre-deployed EOI
+739,True,3450.0,0,,,
+740,True,3450.0,0,,,
+742,False,3106.0,2,3106.0,Orion,Ascent
+743,True,3450.0,0,,,
+744,True,3450.0,0,,,
+747,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+745,True,3450.0,0,,,
+746,True,3450.0,0,,,
+748,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+752,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+749,True,3450.0,0,,,
+750,True,3450.0,0,,,
+751,True,3450.0,0,,,
+755,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+753,True,3450.0,0,,,
+758,False,3107.0,2,3107.0,Orion,Lunar Transit
+754,True,3450.0,0,,,
+757,True,3450.0,0,,,
+756,True,3450.0,0,,,
+759,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+761,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+760,True,3450.0,0,,,
+762,True,3450.0,0,,,
+763,True,3450.0,0,,,
+764,True,3450.0,0,,,
+767,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+765,True,3450.0,0,,,
+766,False,3114.0,2,3114.0,HAB + MOI-MCPS,"Mars Capture Burn, MOI Jettisoned"
+770,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+768,True,3450.0,0,,,
+769,True,3450.0,0,,,
+772,False,3105.0,2,3105.0,MOI-MCPS,Lunar Transit
+771,True,3450.0,0,,,
+773,True,3450.0,0,,,
+774,True,3450.0,0,,,
+776,False,3106.0,2,3106.0,Orion,Ascent
+777,False,1462.0,2,1462.0,SEP-01 + TEI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+775,True,3450.0,0,,,
+779,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+778,True,3450.0,0,,,
+781,True,3450.0,0,,,
+780,True,3450.0,0,,,
+782,True,3450.0,0,,,
+785,False,3103.0,2,3103.0,Orion,Countdown
+786,False,1462.0,2,1462.0,SEP-02 + EOI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+783,True,3450.0,0,,,
+784,True,3450.0,0,,,
+789,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+787,True,3450.0,0,,,
+788,True,3450.0,0,,,
+793,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+790,True,3450.0,0,,,
+795,False,3104.0,2,3104.0,MOI-MCPS,Ascent
+792,True,3450.0,0,,,
+791,True,3450.0,0,,,
+798,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+796,False,3103.0,2,3103.0,HAB,Ascent
+794,True,3450.0,0,,,
+799,False,3104.0,2,3104.0,MOI-MCPS,Ascent
+802,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+797,True,3450.0,0,,,
+800,True,3450.0,0,,,
+801,True,3450.0,0,,,
+806,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+807,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+804,False,3428.0,2,3428.0,Orion-Pickup,Lunar Insertion
+803,True,3450.0,0,,,
+805,True,3450.0,0,,,
+810,False,3104.0,2,3104.0,MOI-MCPS,Ascent
+812,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+811,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+813,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+808,True,3450.0,0,,,
+809,True,3450.0,0,,,
+814,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+817,False,3103.0,2,3103.0,HAB,Ascent
+816,True,3450.0,0,,,
+815,True,3450.0,0,,,
+818,True,3450.0,0,,,
+822,False,1462.0,2,1462.0,SEP-02 + EOI-MCPS,"Mars Orbit Capture, SEP Jettisoned, Awaiting Crew..."
+820,False,3103.0,2,3100.0,HAB,Countdown
+820,False,3103.0,3,3103.0,Orion,Countdown
+823,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+819,True,3450.0,0,,,
+825,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+826,False,5.0,2,5.0,SEP-01 + TEI-MCPS,Mars Transit
+824,False,3112.0,2,3112.0,TMI-MCPS,Lunar Insertion
+821,False,3421.0,2,3421.0,Orion-Pickup,Ascent
+830,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+827,True,3450.0,0,,,
+828,True,3450.0,0,,,
+829,False,3428.0,2,3428.0,Orion-Pickup,Lunar Insertion
+833,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+831,True,3450.0,0,,,
+834,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+832,True,3450.0,0,,,
+835,True,3450.0,0,,,
+836,True,3450.0,0,,,
+837,True,3450.0,0,,,
+838,True,3450.0,0,,,
+841,False,3103.0,2,3103.0,HAB,Ascent
+842,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+839,True,3450.0,0,,,
+840,True,3450.0,0,,,
+846,False,5.0,2,5.0,SEP-02 + EOI-MCPS,Mars Transit
+844,False,3106.0,2,3106.0,Orion,Ascent
+848,False,5.0,2,5.0,SEP-02 + EOI-MCPS,Mars Transit
+843,True,3450.0,0,,,
+845,False,3116.0,2,3100.0,HAB,Countdown
+850,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+851,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+847,True,3450.0,0,,,
+852,False,3116.0,2,3100.0,HAB,Countdown
+849,True,3450.0,0,,,
+856,False,4.0,2,4.0,SEP-02 + EOI-MCPS,Ascent
+853,True,3450.0,0,,,
+854,True,3450.0,0,,,
+858,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+855,True,3450.0,0,,,
+859,False,1506.0,2,1506.0,SEP-03 + MLS,"Mars Transit, SEP Jettisoned"
+857,True,3450.0,0,,,
+863,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+860,True,3450.0,0,,,
+861,True,3450.0,0,,,
+862,True,3450.0,0,,,
+864,True,3450.0,0,,,
+865,False,3428.0,2,3428.0,Orion-Pickup,Lunar Insertion
+866,True,3450.0,0,,,
+867,True,3450.0,0,,,
+869,False,3106.0,2,3106.0,TMI-MCPS,Lunar Transit
+868,True,3450.0,0,,,
+872,False,3111.0,2,3111.0,HAB,Rendezvous-ing
+870,True,3450.0,0,,,
+871,True,3450.0,0,,,
+873,True,3450.0,0,,,
+874,True,3450.0,0,,,
+875,True,3450.0,0,,,
+876,True,3450.0,0,,,
+878,False,1506.0,2,1506.0,SEP-03 + MLS,"Mars Transit, SEP Jettisoned"
+877,True,3450.0,0,,,
+881,False,3114.0,2,3114.0,HAB + MOI-MCPS + TMI-MCPS,"Mars Transfer Burn, TMI Jettisoned"
+883,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+879,True,3450.0,0,,,
+880,True,3450.0,0,,,
+884,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+882,True,3450.0,0,,,
+887,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+885,True,3450.0,0,,,
+886,True,3450.0,0,,,
+890,False,3105.0,2,3105.0,TMI-MCPS,Ascent
+888,True,3450.0,0,,,
+889,True,3450.0,0,,,
+891,True,3450.0,0,,,
+892,True,3450.0,0,,,
+895,False,3103.0,2,3103.0,Orion,Countdown
+893,True,3450.0,0,,,
+894,True,3450.0,0,,,
+898,False,3103.0,2,3103.0,Orion,Countdown
+896,True,3450.0,0,,,
+899,True,3450.0,0,,,
+901,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+897,True,3450.0,0,,,
+900,True,3450.0,0,,,
+905,False,3103.0,2,3103.0,HAB,Ascent
+903,True,3450.0,0,,,
+902,True,3450.0,0,,,
+904,True,3450.0,0,,,
+908,False,3104.0,2,3104.0,MOI-MCPS,Ascent
+909,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+906,True,3450.0,0,,,
+907,True,3450.0,0,,,
+910,True,3450.0,0,,,
+913,False,3111.0,2,3111.0,MOI-MCPS,Lunar Insertion
+914,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+911,True,3450.0,0,,,
+917,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+912,True,3450.0,0,,,
+915,True,3450.0,0,,,
+916,True,3450.0,0,,,
+918,True,3450.0,0,,,
+920,False,3113.0,2,3113.0,HAB + MOI-MCPS + TMI-MCPS,Rendezvous-ing
+919,True,3450.0,0,,,
+921,False,3114.0,2,3114.0,HAB + MOI-MCPS,"Mars Capture Burn, MOI Jettisoned"
+922,True,3450.0,0,,,
+923,True,3450.0,0,,,
+924,True,3450.0,0,,,
+925,True,3450.0,0,,,
+929,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+930,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+926,False,3421.0,2,3421.0,Orion-Pickup,Ascent
+931,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+933,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+927,True,3450.0,0,,,
+928,True,3450.0,0,,,
+936,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+932,True,3450.0,0,,,
+937,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+934,True,3450.0,0,,,
+935,True,3450.0,0,,,
+941,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+938,True,3450.0,0,,,
+939,True,3450.0,0,,,
+940,True,3450.0,0,,,
+945,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+942,True,3450.0,0,,,
+947,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+943,True,3450.0,0,,,
+944,True,3450.0,0,,,
+946,True,3450.0,0,,,
+949,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+951,False,5.0,2,5.0,SEP-02 + EOI-MCPS,Mars Transit
+948,True,3450.0,0,,,
+953,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+950,True,3450.0,0,,,
+955,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+957,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+952,True,3450.0,0,,,
+958,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+954,True,3450.0,0,,,
+956,True,3450.0,0,,,
+959,False,3119.0,2,3100.0,HAB,Countdown
+959,False,3119.0,3,3103.0,HAB,Countdown
+960,True,3450.0,0,,,
+961,True,3450.0,0,,,
+962,True,3450.0,0,,,
+963,True,3450.0,0,,,
+966,False,3103.0,2,3103.0,Orion,Countdown
+964,True,3450.0,0,,,
+969,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+965,True,3450.0,0,,,
+967,False,3120.0,2,3120.0,HAB,Rendezvous of HAB with Pre-deployed EOI
+971,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+970,False,1505.0,2,1505.0,SEP-03 + MLS,Ascent
+968,True,3450.0,0,,,
+973,True,3450.0,0,,,
+972,True,3450.0,0,,,
+977,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+976,False,5.0,2,5.0,SEP-01 + TEI-MCPS,Mars Transit
+974,False,3111.0,2,3111.0,MOI-MCPS,Lunar Insertion
+975,True,3450.0,0,,,
+980,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+981,False,3103.0,2,3103.0,Orion,Countdown
+978,False,3113.0,2,3113.0,Orion,Lunar Insertion
+979,False,3113.0,2,3113.0,Orion,Lunar Insertion
+985,False,3103.0,2,3103.0,Orion,Countdown
+986,False,1.0,2,1.0,SEP-02 + EOI-MCPS,Countdown
+982,True,3450.0,0,,,
+988,False,3102.0,2,3102.0,TMI-MCPS,Countdown
+989,False,1.0,2,1.0,SEP-01 + TEI-MCPS,Countdown
+983,True,3450.0,0,,,
+984,True,3450.0,0,,,
+987,True,3450.0,0,,,
+991,True,3450.0,0,,,
+990,True,3450.0,0,,,
+992,True,3450.0,0,,,
+993,True,3450.0,0,,,
+994,True,3450.0,0,,,
+995,True,3450.0,0,,,
+996,True,3450.0,0,,,
+998,False,3101.0,2,3101.0,MOI-MCPS,Countdown
+999,True,3450.0,0,,,
+997,True,3450.0,0,,,

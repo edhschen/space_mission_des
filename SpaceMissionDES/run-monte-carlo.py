@@ -22,9 +22,10 @@ set_logging_level(logging.ERROR)
 
 # Import the desired case -- INPUT
 # from missions.Case03_TankThenMoon import initial_vehicles
-from missions.Case04_TwoMerge import initial_vehicles
+# from missions.Case04_TwoMerge import initial_vehicles
+from missions.Mars_01 import initial_vehicles
 
-out_dir = Path.cwd() / "results" / "test-04"
+out_dir = Path.cwd() / "results" / "test-05"
 if not out_dir.exists():
     out_dir.mkdir()
 
