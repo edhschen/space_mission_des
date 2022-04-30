@@ -7,6 +7,7 @@ python 3.10 (scipy, tqdm, pandas)
 ### running
 1. install all dependencies and python 3.10
 2. in `SpaceMissionDES/run-single.py` or `SpaceMissionDES/run-monte-carlo.py` import the input setting file for the mission in question, for instance `from missions.Case04_TwoMerge import initial_vehicles`
+    * premade missions can be found in `SpaceMissionDES/missions/`, with `Mars-01` being the culminating study
 3. from the root directory, `python3.10 SpaceMissionDES/run-single.py` or `python3.10 SpaceMissionDES/run-monte-carlo.py`
     * run-monte-carlo runs 200 trials, whereas run-single runs one
     * run-monte-carlo outputs a trial results file in `results/`
