@@ -1,0 +1,284 @@
+
+***********
+***BEGIN***
+
+
+	EVENT:  INIT  @ time 0.0
+	  VEHICLE SEP-01 > Begin ACTIVITY:  Vehicle Creation
+	TERMINAL EVENT named DONE @ time 0.0
+
+	EVENT:  INIT  @ time 0.0
+	  VEHICLE TEI-MCPS > Begin ACTIVITY:  Vehicle Creation
+	TERMINAL EVENT named DONE @ time 0.0
+
+	EVENT:  INIT  @ time 0.0
+	  VEHICLE SEP-02 > Begin ACTIVITY:  Vehicle Creation
+	TERMINAL EVENT named DONE @ time 0.0
+
+	EVENT:  INIT  @ time 0.0
+	  VEHICLE EOI-MCPS > Begin ACTIVITY:  Vehicle Creation
+	TERMINAL EVENT named DONE @ time 0.0
+
+	EVENT:  INIT  @ time 1.0
+	  VEHICLE SEP-02 + EOI-MCPS > Begin ACTIVITY:  Countdown
+
+	EVENT:  INIT  @ time 1.0
+	  VEHICLE SEP-01 + TEI-MCPS > Begin ACTIVITY:  Countdown
+
+	EVENT:  launch  @ time 4.0
+	  VEHICLE SEP-02 + EOI-MCPS > Begin ACTIVITY:  Ascent
+
+	EVENT:  launch  @ time 4.0
+	  VEHICLE SEP-01 + TEI-MCPS > Begin ACTIVITY:  Ascent
+
+	EVENT:  transfer burn  @ time 5.0
+	  VEHICLE SEP-02 + EOI-MCPS > Begin ACTIVITY:  Mars Transit
+
+	EVENT:  transfer burn  @ time 5.0
+	  VEHICLE SEP-01 + TEI-MCPS > Begin ACTIVITY:  Mars Transit
+
+	EVENT:  capture burn  @ time 1462.0
+	  VEHICLE SEP-02 + EOI-MCPS > Begin ACTIVITY:  Mars Orbit Capture, SEP Jettisoned, Awaiting Crew...
+	TERMINAL EVENT named DONE @ time 1472.0
+
+	EVENT:  capture burn  @ time 1462.0
+	  VEHICLE SEP-01 + TEI-MCPS > Begin ACTIVITY:  Mars Orbit Capture, SEP Jettisoned, Awaiting Crew...
+	TERMINAL EVENT named DONE @ time 1472.0
+
+	EVENT:  INIT  @ time 1500.0
+	  VEHICLE SEP-03 > Begin ACTIVITY:  Vehicle Creation
+	TERMINAL EVENT named DONE @ time 1500.0
+
+	EVENT:  INIT  @ time 1501.0
+	  VEHICLE MLS > Begin ACTIVITY:  Vehicle Creation
+
+	EVENT:  wait  @ time 1501.0
+	  VEHICLE MLS > Begin ACTIVITY:  Waiting for HAB Separation
+
+	EVENT:  INIT  @ time 1502.0
+	  VEHICLE SEP-03 + MLS > Begin ACTIVITY:  Countdown
+
+	EVENT:  launch  @ time 1505.0
+	  VEHICLE SEP-03 + MLS > Begin ACTIVITY:  Ascent
+
+	EVENT:  transfer burn  @ time 1506.0
+	  VEHICLE SEP-03 + MLS > Begin ACTIVITY:  Mars Transit, SEP Jettisoned
+	  VEHICLES SEP-03 + MLS > decoupled CHILDREN:  ['SEP-03', 'MLS']
+
+	EVENT:  capture burn  @ time 2963.0
+	  VEHICLE SEP-03 + MLS > Begin ACTIVITY:  Mars Aerocapture, awaiting crew...
+	TERMINAL EVENT named DONE @ time 2968.0
+
+	EVENT:  INIT  @ time 3100.0
+	  VEHICLE HAB > Begin ACTIVITY:  Countdown
+
+	EVENT:  INIT  @ time 3101.0
+	  VEHICLE MOI-MCPS > Begin ACTIVITY:  Countdown
+
+	EVENT:  INIT  @ time 3102.0
+	  VEHICLE TMI-MCPS > Begin ACTIVITY:  Countdown
+
+	EVENT:  INIT  @ time 3103.0
+	  VEHICLE Orion > Begin ACTIVITY:  Countdown
+
+	EVENT:  launch  @ time 3103.0
+	  VEHICLE HAB > Begin ACTIVITY:  Ascent
+
+	EVENT:  INIT  @ time 3104.0
+	  VEHICLE Orion-Pickup > Begin ACTIVITY:  Waiting for Crew Arrival to LDRO
+
+	EVENT:  launch  @ time 3104.0
+	  VEHICLE MOI-MCPS > Begin ACTIVITY:  Ascent
+
+	EVENT:  transfer burn  @ time 3104.0
+	  VEHICLE HAB > Begin ACTIVITY:  Lunar Transit
+
+	EVENT:  launch  @ time 3105.0
+	  VEHICLE TMI-MCPS > Begin ACTIVITY:  Ascent
+
+	EVENT:  transfer burn  @ time 3105.0
+	  VEHICLE MOI-MCPS > Begin ACTIVITY:  Lunar Transit
+
+	EVENT:  launch  @ time 3106.0
+	  VEHICLE Orion > Begin ACTIVITY:  Ascent
+
+	EVENT:  transfer burn  @ time 3106.0
+	  VEHICLE TMI-MCPS > Begin ACTIVITY:  Lunar Transit
+
+	EVENT:  transfer burn  @ time 3107.0
+	  VEHICLE Orion > Begin ACTIVITY:  Lunar Transit
+
+	EVENT:  capture burn  @ time 3110.0
+	  VEHICLE HAB > Begin ACTIVITY:  Lunar Insertion
+
+	EVENT:  capture burn  @ time 3111.0
+	  VEHICLE MOI-MCPS > Begin ACTIVITY:  Lunar Insertion
+	TERMINAL EVENT named DONE @ time 3112.0
+
+	EVENT:  wait  @ time 3111.0
+	  VEHICLE HAB > Begin ACTIVITY:  Waiting for MOI...
+Predictate <Is MOI in Lunar Orbit?> Satisfied
+
+	EVENT:  rendezvous  @ time 3111.0
+	  VEHICLE HAB > Begin ACTIVITY:  Rendezvous-ing
+	  VEHICLES ['HAB', 'MOI-MCPS'] > Begin ACTIVITY:  Rendezvous-ing
+	  VEHICLES ['HAB', 'MOI-MCPS'] > JOINED TO:  HAB + MOI-MCPS
+
+	EVENT:  capture burn  @ time 3112.0
+	  VEHICLE TMI-MCPS > Begin ACTIVITY:  Lunar Insertion
+	TERMINAL EVENT named DONE @ time 3113.0
+
+	EVENT:  INIT  @ time 3112.0
+	  VEHICLE HAB + MOI-MCPS > Begin ACTIVITY:  Successfully Rendezvous!
+
+	EVENT:  wait for mars arrival  @ time 3112.0
+	  VEHICLE HAB > Begin ACTIVITY:  Waiting for Mars Arrival...
+
+	EVENT:  wait  @ time 3112.0
+	  VEHICLE HAB + MOI-MCPS > Begin ACTIVITY:  Waiting for TMI...
+Predictate <Is TMI in Lunar Orbit?> Satisfied
+
+	EVENT:  rendezvous  @ time 3112.0
+	  VEHICLE HAB + MOI-MCPS > Begin ACTIVITY:  Rendezvous-ing
+	  VEHICLES ['HAB + MOI-MCPS', 'TMI-MCPS'] > Begin ACTIVITY:  Rendezvous-ing
+	  VEHICLES ['HAB + MOI-MCPS', 'TMI-MCPS'] > JOINED TO:  HAB + MOI-MCPS + TMI-MCPS
+
+	EVENT:  capture burn  @ time 3113.0
+	  VEHICLE Orion > Begin ACTIVITY:  Lunar Insertion
+
+	EVENT:  INIT  @ time 3113.0
+	  VEHICLE HAB + MOI-MCPS + TMI-MCPS > Begin ACTIVITY:  Waiting for Orion...
+Predictate <Is Orion in Lunar Orbit?> Satisfied
+
+	EVENT:  wait for mars arrival  @ time 3113.0
+	  VEHICLE HAB + MOI-MCPS > Begin ACTIVITY:  Waiting for Mars Arrival...
+
+	EVENT:  rendezvous  @ time 3113.0
+	  VEHICLE HAB + MOI-MCPS + TMI-MCPS > Begin ACTIVITY:  Rendezvous-ing
+	  VEHICLES ['HAB + MOI-MCPS + TMI-MCPS', 'Orion'] > Begin ACTIVITY:  Rendezvous-ing
+	  VEHICLES ['HAB + MOI-MCPS + TMI-MCPS', 'Orion'] > JOINED TO:  Orion + HAB + MOI-MCPS + TMI-MCPS
+
+	EVENT:  crew transfer burn  @ time 3114.0
+	  VEHICLE Orion > Begin ACTIVITY:  Crew Transferring from Orion to HAB.
+	TERMINAL EVENT named DONE @ time 3114.0
+
+	EVENT:  INIT  @ time 3114.0
+	  VEHICLE Orion + HAB + MOI-MCPS + TMI-MCPS > Begin ACTIVITY:  Crew Transferring From Orion to HAB.
+
+	EVENT:  wait  @ time 3114.0
+	  VEHICLE HAB + MOI-MCPS + TMI-MCPS > Begin ACTIVITY:  Waiting for Orion Jettison...
+
+	EVENT:  separation orion  @ time 3114.0
+	  VEHICLE Orion + HAB + MOI-MCPS + TMI-MCPS > Begin ACTIVITY:  Jettisoning Orion
+	  VEHICLES Orion + HAB + MOI-MCPS + TMI-MCPS > decoupled CHILDREN:  ['HAB + MOI-MCPS + TMI-MCPS', 'Orion']
+	TERMINAL EVENT named DONE @ time 3114.0
+Predictate <Orion Jettisoned?> Satisfied
+
+	EVENT:  transfer burn  @ time 3114.0
+	  VEHICLE HAB + MOI-MCPS + TMI-MCPS > Begin ACTIVITY:  Mars Transfer Burn, TMI Jettisoned
+	  VEHICLES HAB + MOI-MCPS + TMI-MCPS > decoupled CHILDREN:  ['HAB + MOI-MCPS', 'TMI-MCPS']
+	TERMINAL EVENT named DONE @ time 3464.0
+Predictate <Arrived at Mars?> Satisfied
+
+	EVENT:  capture burn  @ time 3114.0
+	  VEHICLE HAB + MOI-MCPS > Begin ACTIVITY:  Mars Capture Burn, MOI Jettisoned
+	  VEHICLES HAB + MOI-MCPS > decoupled CHILDREN:  ['HAB', 'MOI-MCPS']
+	TERMINAL EVENT named DONE @ time 3114.0
+Predictate <Arrived at Mars?> Satisfied
+
+	EVENT:  rendezvous of HAB with MLS  @ time 3114.0
+	  VEHICLE HAB > Begin ACTIVITY:  Rendezvous of HAB with MLS, Crew Transferring to MLS
+	  VEHICLES ['HAB', 'MLS'] > Begin ACTIVITY:  Rendezvous of HAB with MLS, Crew Transferring to MLS
+	  VEHICLES ['HAB', 'MLS'] > JOINED TO:  HAB + MLS
+
+	EVENT:  INIT  @ time 3115.0
+	  VEHICLE HAB + MLS > Begin ACTIVITY:  Crew Transferred to MLS, HAB Separating
+	  VEHICLES HAB + MLS > decoupled CHILDREN:  ['HAB', 'MLS']
+	TERMINAL EVENT named DONE @ time 3116.0
+Predictate <HAB Separated?> Satisfied
+
+	EVENT:  wait for surface operations  @ time 3115.0
+	  VEHICLE HAB > Begin ACTIVITY:  Waiting for Surface Operations
+
+	EVENT:  transfer burn  @ time 3115.0
+	  VEHICLE MLS > Begin ACTIVITY:  Transfer Burn to Mars Surface
+
+	EVENT:  surface operations  @ time 3120.0
+	  VEHICLE MLS > Begin ACTIVITY:  Mars Surface Operations
+Predictate <Surface Operations Started?> Satisfied
+
+	EVENT:  rendezvous of HAB with EOI  @ time 3120.0
+	  VEHICLE HAB > Begin ACTIVITY:  Rendezvous of HAB with Pre-deployed EOI
+	  VEHICLES ['HAB', 'EOI-MCPS'] > Begin ACTIVITY:  Rendezvous of HAB with Pre-deployed EOI
+	  VEHICLES ['HAB', 'EOI-MCPS'] > JOINED TO:  HAB + EOI-MCPS
+	TERMINAL EVENT named DONE @ time 3121.0
+
+	EVENT:  INIT  @ time 3121.0
+	  VEHICLE HAB + EOI-MCPS > Begin ACTIVITY:  Rendezvous of HAB + EOI-MCPS with TEI-MCPS
+	  VEHICLES ['HAB + EOI-MCPS', 'TEI-MCPS'] > Begin ACTIVITY:  Rendezvous of HAB + EOI-MCPS with TEI-MCPS
+	  VEHICLES ['HAB + EOI-MCPS', 'TEI-MCPS'] > JOINED TO:  HAB + EOI-MCPS + TEI-MCPS
+
+	EVENT:  INIT  @ time 3122.0
+	  VEHICLE HAB + EOI-MCPS + TEI-MCPS > Begin ACTIVITY:  Waiting for Crew...
+
+	EVENT:  wait  @ time 3122.0
+	  VEHICLE HAB + EOI-MCPS > Begin ACTIVITY:  Waiting for TEI Burn...
+
+	EVENT:  crew transfer burn  @ time 3420.0
+	  VEHICLE MLS > Begin ACTIVITY:  Boarding MCT
+
+	EVENT:  launch  @ time 3420.0
+	  VEHICLE MLS > Begin ACTIVITY:  MCT Launch to HAB
+
+	EVENT:  rendezvous  @ time 3421.0
+	  VEHICLE MLS > Begin ACTIVITY:  Rendezvous of MCT with HAB
+	TERMINAL EVENT named DONE @ time 3422.0
+Predictate <Crew Onboard?> Satisfied
+
+	EVENT:  transfer burn  @ time 3421.0
+	  VEHICLE HAB + EOI-MCPS + TEI-MCPS > Begin ACTIVITY:  Trans Earth Injection Burn, TEI Jettisoned
+	  VEHICLES HAB + EOI-MCPS + TEI-MCPS > decoupled CHILDREN:  ['HAB + EOI-MCPS', 'TEI-MCPS']
+	TERMINAL EVENT named DONE @ time 3619.0
+Predictate <TEI Burn Complete?> Satisfied
+
+	EVENT:  capture burn  @ time 3421.0
+	  VEHICLE HAB + EOI-MCPS > Begin ACTIVITY:  Earth Orbit Insertion Burn into LDRO, EOI Jettisoned
+	  VEHICLES HAB + EOI-MCPS > decoupled CHILDREN:  ['HAB', 'EOI-MCPS']
+	TERMINAL EVENT named DONE @ time 3422.0
+Predictate <Crew at LDRO?> Satisfied
+
+	EVENT:  launch  @ time 3421.0
+	  VEHICLE Orion-Pickup > Begin ACTIVITY:  Ascent
+
+	EVENT:  transfer burn  @ time 3422.0
+	  VEHICLE Orion-Pickup > Begin ACTIVITY:  Lunar Transit
+
+	EVENT:  capture burn  @ time 3428.0
+	  VEHICLE Orion-Pickup > Begin ACTIVITY:  Lunar Insertion
+
+	EVENT:  rendezvous  @ time 3429.0
+	  VEHICLE Orion-Pickup > Begin ACTIVITY:  Rendezvous of Orion with HAB, Crew Transferring to Orion
+	  VEHICLES ['HAB', 'Orion-Pickup'] > Begin ACTIVITY:  Rendezvous of Orion with HAB, Crew Transferring to Orion
+	  VEHICLES ['HAB', 'Orion-Pickup'] > JOINED TO:  HAB + Orion-Pickup
+
+	EVENT:  INIT  @ time 3430.0
+	  VEHICLE HAB + Orion-Pickup > Begin ACTIVITY:  Crew Successfully Transferred from HAB to Orion, HAB Jettisoned
+	  VEHICLES HAB + Orion-Pickup > decoupled CHILDREN:  ['HAB', 'Orion-Pickup']
+	TERMINAL EVENT named DONE @ time 3430.0
+
+	EVENT:  wait  @ time 3430.0
+	  VEHICLE Orion-Pickup > Begin ACTIVITY:  Waiting for Crew Transfer...
+Predictate <Crew Transferred?> Satisfied
+
+	EVENT:  descent burn  @ time 3430.0
+	  VEHICLE Orion-Pickup > Begin ACTIVITY:  Descent Burn Back to Earth
+
+	EVENT:  landing  @ time 3450.0
+	  VEHICLE Orion-Pickup > Begin ACTIVITY:  Crew Landing on Earth
+	TERMINAL EVENT named MISSION COMPLETE @ time 3451.0
+
+COMPLETE
+
+
+***DONE****
+***********
