@@ -47,8 +47,8 @@ class Activity:
     duration: float
 
 # waiting = Activity("waiting", INIT, liftoff, 0)
-# s1_ascent = Activity("s1_ascent", liftoff, stage, 5)
-# s2_ascent = Activity("s2_ascent", stage, orbit, 5)
+# s1_ascent = Activity("s1_ascent", liftoff, separation, 5)
+# s2_ascent = Activity("s2_ascent", separation, orbit, 5)
 
 # %% [markdown]
 # Vehicles
@@ -83,9 +83,9 @@ class Object:
         self.trace = pd.concat([
             self.trace,
             pd.DataFrame({
-                "CurrentEvent": self.activity.start, 
-                "NextEvent": self.activity.end, 
-                "Resource": self.resource, 
+                "CurrentEvent": self.activity.start,
+                "NextEvent": self.activity.end,
+                "Resource": self.resource,
                 "Activity": self.activity}, index = [len(self.trace) + 1])
         ])
 
@@ -105,16 +105,16 @@ class ScheduledEvent:
 class FutureEventList:
     def __init__(self):
         self.events = []
-        
+
     def __iter__(self):
         return self
-    
+
     def __next__(self) -> Event:
         from heapq import heappop
         if self.events:
             return heappop(self.events)
         raise StopIteration
-    
+
     def __repr__(self) -> str:
         from pprint import pformat
         return pformat(self.events)
@@ -309,6 +309,3 @@ vehicle.trace
 system_state
 
 # %%
-
-
-

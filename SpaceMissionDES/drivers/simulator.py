@@ -20,7 +20,7 @@ def new_future_queue():
 
 @dataclass
 class Simulator:
-    entities: dict = field(default_factory = lambda: {})  
+    entities: dict = field(default_factory = lambda: {})
     # no default, we cannot start a sim without entities ?
     failures: pd.DataFrame = pd.DataFrame(columns=["Time", "Vehicle", "Activity"])
     future: FutureEventList = FutureEventList()
@@ -28,17 +28,16 @@ class Simulator:
     predicates: list = field(default_factory = lambda: [])
     clock: float = 0.0
     success: bool = False
-    queue_future: asyncio.Queue = field(default_factory = new_future_queue)        
+    queue_future: asyncio.Queue = field(default_factory = new_future_queue)
 
     async def process_events(self):
         for event in self.future:
-            
-            # update the time            
+            # update the time
             self.clock = event.time
-            
+
             # trigger the event
             event.set()
-            
+
             # Get the next event -- we use await here to pass control back and forth between the main scheduler and the activity handlers
             new_event = await self.queue_future.get()
 
@@ -51,13 +50,13 @@ class Simulator:
                     excess_event.set()
 
                 return # Exit the process_events loop immediately
-            
+
             elif isinstance(new_event, CompletionEvent):                        # Completion events conclude a ConOps and DO NOT schedule new events
                 logging.info(f"\tTERMINAL EVENT named {new_event.name} @ time {new_event.time}")
 
             elif new_event.predicate != None:                                   # Predicate events are added to predicates, not scheduled until satisfied
                 self.predicates.append(new_event)
-            
+
             else:
                 self.schedule(new_event)
 
@@ -80,7 +79,7 @@ class Simulator:
             #         predicate.time = self.clock
             #         self.schedule(predicate)
             #         self.predicates.remove(predicate)
-                    
+
 
         # Only log success if all predicates have been satisfied
         if len(self.predicates) == 0:
@@ -114,11 +113,11 @@ class Simulator:
 
         for start_time, vehicle in initial_vehicles:
             self.add_vehicle(vehicle, start_time)
-        
+
         self.tasks.append(
             asyncio.create_task(self.process_events(), name="process_event")
         )
-        
+
         await asyncio.gather(*self.tasks)
 
     def log_failure(self, time, vehicle, activity):
@@ -159,7 +158,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
     current_end = check_activity_failure(current_activity, vehicle, sim)
 
     # ---------------------------------------------------------------------------------------------
-    # Update the Vehicle -- ONLY if the event activity is succesful
+    # Update the Vehicle -- ONLY if the event activity is successful
     vehicle.activity = current_activity
     # print(vehicle.resource)
     vehicle.resource = Counter(vehicle.resource) - Counter(current_activity.resource_change)
@@ -188,7 +187,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             #     name = ""
             #     for vc in current_activity.agg_params['vehicles']:
             #         name += sim.entities[vc].name + "/"
-            
+
             # print(current_activity.agg_params['conops'])
             parent_vc = Vehicle(current_activity.agg_params['name'], current_activity.agg_params['conops'], dict(resources_agg), children = current_activity.agg_params['vehicles'][:])
 
@@ -196,7 +195,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
                 # print(f"Currently checking {vc}")
                 # print(sim.entities[vc].parent)
                 sim.entities[vc].parent = current_activity.agg_params['name']
-            
+
             sim.add_vehicle(parent_vc, sim.clock + current_activity.duration)
 
         if current_activity.agg_type == "dejoin":
@@ -217,7 +216,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             vehicle.children.append(current_activity.agg_params['vehicles'][:])
             for vc in current_activity.agg_params['vehicles']:
                 sim.entities[vc].parent = vehicle.name
-    
+
     if isinstance(current_end, Failure):
         next_event = FailureEvent(
             current_activity.failure.name,
@@ -225,7 +224,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
             sim.clock
         )
         # Update failure counters somewhere
-    
+
     elif isinstance(current_end, Completor):
         next_event = CompletionEvent(
             current_activity.end.name,
@@ -237,7 +236,7 @@ async def activity_handler(name: str, start: ScheduledEvent, sim: Simulator, veh
 
     else:
         next_activity = vehicle.conops.after(current_end)
-        
+
         if isinstance(current_activity, PredicatedActivity):
             # Create the event, but don't schedule it
             next_event = ScheduledEvent(
@@ -276,7 +275,7 @@ def check_activity_failure(activity, vehicle, sim):
             for v in vehicle:
                 name += v.name + "/"
         logging.warning(f"  FAIL -- VEHICLE {vehicle.name} failed ACTIVITY:  {activity.name}")
-        
+
         if not multievent:
             # Log failure to sim -- Vehicle X failed on activity Y at time Z
             sim.log_failure(sim.clock, vehicle.name, activity.name)
@@ -286,7 +285,7 @@ def check_activity_failure(activity, vehicle, sim):
             for v in vehicle:
                 sim.log_failure(sim.clock, v.name, activity.name)
                 v.handle_failure()
-        
+
         outcome = activity.failure
     else:
         outcome = activity.end

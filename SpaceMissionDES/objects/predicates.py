@@ -12,12 +12,16 @@ class Predicate:
 
 
 def check_func(p, sim, vehicle, activity):
-    veh = sim.entities[vehicle]
+    try:
+        veh = sim.entities[vehicle]
+    except:
+        return False
     if veh.activity.name == activity:
         logging.info(f"Predictate <{p.predicate.name}> Satisfied")
         return True
     else:
         return False
+
 
 
 def vehicle_in_activity(vehicle: str, activity: str):

@@ -15,8 +15,8 @@ class Activity:
     failure: Event = Failure()
     resource_change: dict = field(default_factory = dict)
     agg_type: str = ""   # either join, dejoin, dropchild, addchild
-    agg_params: dict = field(default_factory = dict) 
-    # dict of agg params 
+    agg_params: dict = field(default_factory = dict)
+    # dict of agg params
     #   FOR join {conops: conops, vehicles: [va, vb], name: "va-vb"}
     #   FOR dejoin N/A
     #   FOR addchild {vehicles: [va, vb]}
@@ -34,7 +34,7 @@ class PredicatedActivity:
     failure: Event = Failure()
     resource_change: dict = field(default_factory = dict)
     agg_type: str = ""
-    agg_params: list = field(default_factory = list)
+    agg_params: dict = field(default_factory = dict)
 
 #######################################################################################################################
 # ConOps

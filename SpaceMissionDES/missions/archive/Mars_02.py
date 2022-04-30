@@ -22,8 +22,8 @@ pra = {
 # Events
 INIT = Event("INIT")
 launch = Event("launch")
-transfer = Event("transfer")
-capture = Event("capture")
+transfer = Event("transfer_burn")
+capture = Event("capture_burn")
 wait = Event("wait")
 DONE = Completor("DONE")
 
@@ -39,15 +39,15 @@ rendezvous = Event("rendezvous")
 
 # (1) EOI MCPS
 # - Predicates
-# hab_arrival = Predicate("Hab Arrived", vehicle_in_activity("HAB", "rendezvous"))
+# hab_arrived = Predicate("Hab Arrived", vehicle_in_activity("HAB", "rendezvous"))
 # - ConOps
 conops_toLDRO_EOI_MCPS = ConOps({
     INIT.name: Activity("Countdown", INIT, launch, duration = 3),#, p_fail = pra["scrub"], failure=INIT),
     launch.name: Activity("Ascent", launch, tli, duration = 1, p_fail = pra["ascent"]),  #TODO: add predicate to wait on other pre-deployments
     tli.name: Activity("lunar_transit", tli, insertion, duration = 6),#, p_fail = pra["mps_burn"]), # Burn to insert into LDRO
-    # insertion.name: PredicatedActivity("lunar_loiter", insertion, ready, predicate=hab_arrival),
+    # insertion.name: PredicatedActivity("lunar_loiter", insertion, ready, predicate=hab_arrived),
     insertion.name: Activity("lunar_loiter", insertion, ready, duration =2),
-    ready.name: Activity("pre-transfer", ready, DONE, duration=1)
+    ready.name: Activity("pre-transfer_burn", ready, DONE, duration=1)
 })
 
 # (2) HAB

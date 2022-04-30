@@ -42,10 +42,10 @@ class ScheduledEvent(asyncio.Event):
 class FutureEventList:
     def __init__(self):
         self.events = []
-        
+
     def __iter__(self):
         return self
-    
+
     def __next__(self) -> ScheduledEvent:
         if self.events:
             return heappop(self.events)
@@ -74,7 +74,7 @@ async def start(countdown, liftoff, future):
     # sim_continue.set()
     queue_to_future.put_nowait(liftoff)
 
-async def ascent_1(liftoff, stage, duration = 1): 
+async def ascent_1(liftoff, stage, duration = 1):
 
     await liftoff.wait()
     print("We have liftoff!")
@@ -84,7 +84,7 @@ async def ascent_1(liftoff, stage, duration = 1):
 
     stage.set()
 
-async def ascent_2(stage, meco, duration = 1): 
+async def ascent_2(stage, meco, duration = 1):
 
     await stage.wait()
     print("Staging complete")
@@ -131,7 +131,7 @@ async def fly_mission():
     # liftoff = asyncio.Event()
     countdown = ScheduledEvent("countdown", 0)
     liftoff   = ScheduledEvent("liftoff", 10)
-    stage     = ScheduledEvent("stage", 25)
+    stage     = ScheduledEvent("separation", 25)
     meco      = ScheduledEvent("meco", 50)
 
     heappush(future.events, countdown)

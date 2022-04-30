@@ -25,10 +25,10 @@ class CompletionEvent(asyncio.Event):
 class FutureEventList:
     def __init__(self):
         self.events = []
-        
+
     def __iter__(self):
         return self
-    
+
     def __next__(self) -> ScheduledEvent:
         if self.events:
             return heappop(self.events)
@@ -58,10 +58,10 @@ async def sim_engine(future):
         # update the time
         # set_time(event.time)
         # print(f"The time is {now()}")
-        
+
         # trigger the event
         event.set()
-        
+
         # await sim_continue.wait()
         new_event = await queue_to_future.get()
 
@@ -77,7 +77,7 @@ async def fly_mission():
     # liftoff = asyncio.Event()
     INIT = ScheduledEvent("countdown", 0)
     liftoff   = ScheduledEvent("liftoff", 10)
-    stage     = ScheduledEvent("stage", 25)
+    stage     = ScheduledEvent("separation", 25)
     meco      = ScheduledEvent("meco", 50)
     TERM      = CompletionEvent("END", 51)
 

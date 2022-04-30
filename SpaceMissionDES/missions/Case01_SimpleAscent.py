@@ -27,7 +27,7 @@ conops = ConOps({
     retry_liftoff.name: Activity("Recycle", retry_liftoff, liftoff, duration = 100)
 })
 
-# Execute the simulation based on the initilized vehicles
+# Execute the simulation based on the initialized vehicles
 initial_vehicles = [
     (0.0, Vehicle("Booster-01", conops, {'propellant':100})),
     # (25.0, Vehicle("Booster-02", conops, 100))
