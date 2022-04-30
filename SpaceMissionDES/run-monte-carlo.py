@@ -25,7 +25,7 @@ set_logging_level(logging.ERROR)
 # from missions.Mars_01 import initial_vehicles
 from missions.Case04_PropAggregation import initial_vehicles
 
-out_dir = Path.cwd() / "results" / "Case04-r05__Tx01-Tk02"
+out_dir = Path.cwd() / "results" / "Case04-r05__Tx01-Tk06"
 if not out_dir.exists():
     out_dir.mkdir()
 

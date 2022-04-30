@@ -27,7 +27,7 @@ pra = {
 
 # Fleet Management and Requirements
 N_transfers_required = 1
-N_tankers_available = 2
+N_tankers_available = 6
 
 # -----------------------------------------------------------------------------------------------------------------
 # Vehicle and ConOps Settings
@@ -63,13 +63,13 @@ until_N_transfers = Predicate(f"Wait until {N_transfers_required} propellant tra
 conops_MTV = ConOps({
 
     # Nominal
-    INIT.name:     Activity("Countdown", INIT, launch, duration=3, p_fail=pra["scrub"], failure=scrub),
-    launch.name:   Activity("Ascent", launch, burnout, duration=1, p_fail=1/500),
-    burnout.name:  Activity("Orbit Insertion", burnout, capture, duration=2, p_fail=pra["mps_burn"]),
-    # capture.name:  Activity("Propellant Aggregation", capture, filled, duration = 100),
-    capture.name:  PredicatedActivity("Propellant Aggregation", capture, filled, predicate=until_N_transfers),
-    filled.name:   Activity("Final Checkout", filled, tmi_burn, duration=2, delay=weibull_min(c=0.5, loc=0, scale=0.1), p_fail=pra["checkout"]),  #TODO: add check to see if clock is < critical value
-    tmi_burn.name: Activity("Begin Mars Transit", tmi_burn, DONE, duration=0, p_fail=pra["mps_burn"]),
+    INIT.name:     Activity("Countdown",             INIT,     launch,   duration=3, p_fail=pra["scrub"], failure=scrub),
+    launch.name:   Activity("Ascent",                launch,   burnout,  duration=1, p_fail=1/500),
+    burnout.name:  Activity("Orbit Insertion",       burnout,  capture,  duration=2, p_fail=pra["mps_burn"]),
+    capture.name:  PredicatedActivity("Aggregation", capture,  filled,   predicate=until_N_transfers),
+    filled.name:   Activity("Final Checkout",        filled,   tmi_burn, duration=2, delay=weibull_min(c=0.5, loc=0, scale=0.1), p_fail=pra["checkout"]),  #TODO: add check to see if clock is < critical value
+    tmi_burn.name: Activity("Begin Mars Transit",    tmi_burn, DONE,     duration=0, p_fail=pra["mps_burn"]),
+    
     # Contigencies
     scrub.name: Activity("Recycle", scrub, INIT, duration=0, delay=weibull_min(c=1, loc=0, scale=4)),
 })
