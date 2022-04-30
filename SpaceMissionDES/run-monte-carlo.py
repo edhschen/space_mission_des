@@ -30,7 +30,7 @@ if not out_dir.exists():
 
 if __name__ == "__main__":
 
-    mc_results = run_montecarlo(initial_vehicles, N := 200, run_parallel=False)
+    mc_results = run_montecarlo(initial_vehicles, N := 1000, run_parallel=True)
 
     success_rate = sum(mc_results.groupby("replicant").first().outcome) / N
 
