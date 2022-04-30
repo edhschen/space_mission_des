@@ -12,6 +12,9 @@ python 3.10 (scipy, tqdm, pandas)
     * run-monte-carlo outputs a trial results file in `results/`
 
 ### directory structure
+`CSE6730_Space_Mission_DES.pdf`
+* final report PDF
+
 `examples/`
 * example jupyter notebook and execution scripts to demonstrate line of reasoning
 
@@ -20,6 +23,8 @@ python 3.10 (scipy, tqdm, pandas)
 
 `results/`
 * resulting files from monte carlo simulation
+* `mars.txt`
+    * resulting files from single run of Mars missions
 
 `SpaceMissionDES/`
 * `analysis/`
